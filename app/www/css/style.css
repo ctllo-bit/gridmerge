@@ -4,170 +4,30 @@ html,body{
 }
 
 body {
-  background: #faf8ef;
-  color: #776e65;
-  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
-  font-size: 18px; 
-  text-align: center;
+    background: #faf8ef;
+    font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+    font-size: 18px; 
+    color: #776e65;
+    text-align: center;
+
+    display: flex;
+    min-height: 100vh;
+    justify-content: center;
 }
 
 .container {
-    width: min(calc(100vw - 24px), 400px);
-    margin: 0 auto;
-    box-sizing: border-box;
-}
-
-.heading {
+    width: min(100% - 24px, 560px);
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-}
-
-h1.title {
-    font-size: clamp(40px, 11vw, 78px);
-    font-weight: bold;
-    margin: 0;
-}
-
-
-.scores-container {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px; /* 分数间距 */
-  margin-top: 8px;
-}
-
-.score-container,
-.best-container {
-  position: relative;
-  display: flex;
-  flex-direction: column; /* label + score */
-  align-items: center;
-  background: #bbada0;
-  padding: 8px 16px;
-  font-weight: bold;
-  border-radius: 4px;
-  color: white;
-  font-size: clamp(16px, 2vw, 25px);
-}
-
-/* 标签显示 */
-.score-container::before,
-.best-container::before {
-  content: attr(data-label); /* HTML里加 data-label="Score"/"Best" */
-  font-size: clamp(10px, 1.5vw, 14px);
-  color: #eee4da;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-
-/* 增量动画 */
-.score-container .score-addition,
-.best-container .score-addition {
-  position: absolute;
-  top: -20px;
-  font-size: clamp(16px, 2vw, 25px);
-  font-weight: bold;
-  color: rgba(119, 110, 101, 0.9);
-  animation: move-up 600ms ease-in forwards;
-}
-
-@keyframes move-up {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-30px); opacity: 0; }
-}
-
-
-
-
-
-.above-game {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-}
-
-
-.restart-button {
-  background: #8f7a66;
-  border: none;           /* 去掉默认边框 */
-  border-radius: 3px;
-  padding: 0 20px;
-  color: #f9f6f2;
-  height: 40px;
-  line-height: 42px;
-  text-decoration: none;
-  cursor: pointer;        /* 鼠标悬停显示手型 */
-  font-size: 16px;        /* 可按需要调整 */
-  font-weight: bold;
-  outline: none;          /* 去掉点击后的虚线框 */
-  transition: background 0.2s; /* 可选，增加 hover 动画 */
-}
-
-.restart-button:active {
-  background: #7b6351;    /* 点击效果 */
+    flex-direction: column;
 }
 
 .grid-container {
-    display: grid;
-
-    width: min(90vw, 400px);
-    height: min(90vw, 400px);
-
-    background-color: #cdc1b5;
-    border: 6px solid #bbada0;
-
-    grid-template-columns: repeat(4,1fr);
-    grid-template-rows: repeat(4,1fr);
-
-    margin: 0 auto;
-}
-
-
-.grid{
     width: auto;
-    height: auto;
+    aspect-ratio: 1;
 
-    border: 5px solid #bbada0;
-    box-sizing: border-box;
-
-    font-size: clamp(20px, 8vw, 40px);
-
-    font-weight: bold;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-@media (max-width: 450px) {
-    body {
-        font-size: 16px;
-    }
-
-    .grid {
-        border-width: 3px;
-        font-size: 28px;
-    }
-
-    .grid-container {
-        border-width: 4px;
-    }
-}
-
-/* 手机变纵向 */
-@media (max-width: 500px) {
-    .above-game {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .restart-button {
-        width: 100%;
-    }
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
 }
 
 /* colored tiles */
