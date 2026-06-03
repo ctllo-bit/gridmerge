@@ -30,12 +30,16 @@
     <div class="controls">
       <p class="desc">将数字合并起来，得到 2048 的方块！</p>
       <div class="buttons">
-        <button class="btn btn-new">新的</button>
+        <button class="btn btn-new" id="newGameBtn">新的</button>
         <button class="btn btn-undo">撤回</button>
       </div>
     </div>
 
     <div class="grid-container">
+        <div class="game-over" id="gameOverOverlay">
+            <h2>游戏结束!</h2>
+            <button class="btn" id="restartBtn">再来一局</button>
+        </div>
     </div>
     
   </main>

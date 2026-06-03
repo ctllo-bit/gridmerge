@@ -111,7 +111,6 @@ body {
   /* 如果受限于 max-width 导致棋盘变窄，保证它在容器中居中 */
   margin: 0 auto; 
 
-
   background-color: #a4968b;
   padding: 10px;
   border-radius: 8px;
@@ -121,6 +120,8 @@ body {
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
   gap: 10px;
+
+  position: relative; /* 增加这行，让遮罩层相对于棋盘定位 */
 }
 
 .cell {
@@ -135,6 +136,30 @@ body {
   /* 45px 左右是极限大，但在小屏幕下它会随着棋盘变小而变小（约为棋盘宽度的 11%） */
   font-size: clamp(16px, 11cqw, 45px);
   font-weight: bold;
+}
+
+/* --- 新增：游戏结束遮罩层 --- */
+.game-over {
+  position: absolute;
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%;
+  background: rgba(238, 228, 218, 0.75); /* 半透明背景 */
+  display: none; /* 默认隐藏，JS 触发时改为 flex */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.game-over h2 {
+  font-size: 40px;
+  font-weight: bold;
+  color: #776e65;
+  margin-top: 0;
+  margin-bottom: 20px;
 }
 
 /* colored tiles */
