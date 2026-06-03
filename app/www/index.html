@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
-    <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>2048</title>
     <link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
@@ -30,7 +30,7 @@
     <div class="controls">
       <p class="desc">将数字合并起来，得到 2048 的方块！</p>
       <div class="buttons">
-        <button class="btn btn-new" id="newGameBtn">新的</button>
+        <button class="btn btn-new restart-button">新的</button>
         <button class="btn btn-undo">撤回</button>
       </div>
     </div>
@@ -38,13 +38,14 @@
     <div class="grid-container">
         <div class="game-over" id="gameOverOverlay">
             <h2>游戏结束!</h2>
-            <button class="btn" id="restartBtn">再来一局</button>
+            <button class="btn retry-button" >再来一局</button>
         </div>
     </div>
     
   </main>
 
     <script src="./js/index.js"></script>
+    <script src="./js/keyboard.js"></script>
     <script src="./js/main.js"></script>
 </body>
 </html>

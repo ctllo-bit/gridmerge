@@ -8,19 +8,19 @@ let gridContainer;
 let scoreElement;
 let gameOverOverlay;
 
-window.onload = function() {
-    gridContainer = document.querySelector(".grid-container");
-    scoreElement  = document.querySelector(".score-value");
+// window.onload = function() {
+//     gridContainer = document.querySelector(".grid-container");
+//     scoreElement  = document.querySelector(".score-value");
     
-    // 获取遮罩层
-    gameOverOverlay = document.getElementById("gameOverOverlay");
+//     // 获取遮罩层
+//     gameOverOverlay = document.getElementById("gameOverOverlay");
 
-    // 绑定“新的”和“再来一局”按钮事件
-    document.getElementById("newGameBtn").addEventListener("click", resetGame);
-    document.getElementById("restartBtn").addEventListener("click", resetGame);
+//     // 绑定“新的”和“再来一局”按钮事件
+//     document.getElementById("newGameBtn").addEventListener("click", resetGame);
+//     document.getElementById("restartBtn").addEventListener("click", resetGame);
 
-    setGame();
-}
+//     setGame();
+// }
 
 function setGame() {
     // board = [
@@ -67,42 +67,97 @@ function updateTile(tile, num) {
     }
 }
 
-document.addEventListener('keyup', (e) => {
-    // 如果游戏已经结束（遮罩层显示），不再响应方向键
-    if (gameOverOverlay.style.display === "flex") {
-        return; 
-    }
+window.onload = function() {
+    gridContainer = document.querySelector(".grid-container");
+    scoreElement  = document.querySelector(".score-value");
+    gameOverOverlay = document.getElementById("gameOverOverlay");
 
-    let moveMade = false;
-    if (e.code == "ArrowLeft") {
-        slideLeft();
-        setTwo();
-        moveMade = true;
-    }
-    else if (e.code == "ArrowRight") {
-        slideRight();
-        setTwo();
-        moveMade = true;
-    }
-    else if (e.code == "ArrowUp") {
-        slideUp();
-        setTwo();
-        moveMade = true;
-    }
-    else if (e.code == "ArrowDown") {
-        slideDown();
-        setTwo();
-        moveMade = true;
-    }
+    // 1. 实例化输入管理器
+    let inputManager = new KeyboardInputManager();
 
-    if (moveMade) {
-        scoreElement.innerText = score;
-        // 每次移动并生成新数字后，检查是否死亡
-        if (checkGameOver()) {
-            gameOverOverlay.style.display = "flex";
+    // 2. 监听 "move" 事件 (代替原来的 keyup)
+    // 管理器会将按键和滑动统一转化为 0(上), 1(右), 2(下), 3(左)
+    inputManager.on("move", function (direction) {
+        // 如果游戏已经结束，不再响应移动
+        if (gameOverOverlay.style.display === "flex") {
+            return; 
         }
-    }
-})
+
+        let moveMade = false;
+        
+        if (direction === 0) { // 向上
+            slideUp();
+            setTwo();
+            moveMade = true;
+        } else if (direction === 1) { // 向右
+            slideRight();
+            setTwo();
+            moveMade = true;
+        } else if (direction === 2) { // 向下
+            slideDown();
+            setTwo();
+            moveMade = true;
+        } else if (direction === 3) { // 向左
+            slideLeft();
+            setTwo();
+            moveMade = true;
+        }
+
+        // 每次有效移动后，更新分数并检查是否游戏结束
+        if (moveMade) {
+            scoreElement.innerText = score;
+            if (checkGameOver()) {
+                gameOverOverlay.style.display = "flex";
+            }
+        }
+    });
+
+    // 3. 监听 "restart" 事件 (代替原来的 click 绑定)
+    // 当玩家点击带有 .restart-button 或 .retry-button 的按钮时，或者按下 'R' 键时，会触发这里
+    inputManager.on("restart", function () {
+        resetGame();
+    });
+
+    // 初始化游戏棋盘
+    setGame();
+}
+
+// document.addEventListener('keyup', (e) => {
+//     // 如果游戏已经结束（遮罩层显示），不再响应方向键
+//     if (gameOverOverlay.style.display === "flex") {
+//         return; 
+//     }
+
+//     let moveMade = false;
+//     if (e.code == "ArrowLeft") {
+//         slideLeft();
+//         setTwo();
+//         moveMade = true;
+//     }
+//     else if (e.code == "ArrowRight") {
+//         slideRight();
+//         setTwo();
+//         moveMade = true;
+//     }
+//     else if (e.code == "ArrowUp") {
+//         slideUp();
+//         setTwo();
+//         moveMade = true;
+//     }
+//     else if (e.code == "ArrowDown") {
+//         slideDown();
+//         setTwo();
+//         moveMade = true;
+//     }
+
+//     if (moveMade) {
+//         scoreElement.innerText = score;
+//         // 每次移动并生成新数字后，检查是否死亡
+//         if (checkGameOver()) {
+//             gameOverOverlay.style.display = "flex";
+//         }
+//     }
+// })
 
 function filterZero(row){
     return row.filter(num => num != 0); //create new array of all nums != 0
