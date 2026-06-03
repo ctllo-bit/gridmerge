@@ -4,7 +4,7 @@ html,body{
 }
 
 body {
-    background: #faf8ef;
+    background-color: #faf8ef; /* 2048 经典的米黄色背景 */
     font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
     font-size: 18px; 
     color: #776e65;
@@ -15,100 +15,198 @@ body {
     justify-content: center;
 }
 
-.container {
+.game-container {
     /* 保持原样：限制最大宽度和两侧间距 */
     width: min(100% - 24px, 560px);
     display: flex;
     flex-direction: column;
 }
 
-.grid-container {
-    /* 1. 基础宽度拉满 container */
-    width: 100%;
-    
-    /* 2. 核心魔法：限制最大宽度不能超过视口高度减去顶部标题栏的高度 */
-    /* 这里的 180px 是预估的 <header> 和 <section class="above-game"> 的总高度，你可以根据实际情况微调 */
-    max-width: calc(100vh - 180px); 
-    
-    /* 3. 如果受限于 max-width 导致棋盘变窄，保证它在容器中居中 */
-    margin: 0 auto; 
-    
-    /* 保证是个正方形 */
-    aspect-ratio: 1;
-
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    
-    /* 建议加上网格间隙，看起来更像 2048 */
-    gap: 10px; 
+/* --- 顶部：Logo 与 分数板 --- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 
+.logo {
+  font-size: 55px;
+  font-weight: bold;
+  background-color: #ecc46b;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  line-height: 1;
+}
+
+.scores {
+  display: flex;
+  gap: 10px;
+}
+
+.score-box {
+  background-color: #3b3a35;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.score-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #eee4da;
+}
+
+.score-value {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: -2px;
+}
+
+
+/* --- 中部：文字说明与按钮 --- */
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.desc {
+  font-size: 14px;
+  max-width: 180px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  background-color: #f75e4f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 18px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* --- 底部：4x4 游戏棋盘 --- */
+.grid-container {
+    /* 1. 基础宽度拉满 container */
+    width: 95%;
+    /* 2. 核心魔法：限制最大宽度不能超过视口高度减去顶部标题栏的高度 */
+    /* 这里的 180px 是预估的 <header> 和 <section class="above-game"> 的总高度，你可以根据实际情况微调 */
+    max-width: calc(100vh - 200px); 
+
+
+
+
+  background-color: #a4968b;
+  padding: 10px;
+  border-radius: 8px;
+  
+  /* CSS Grid 是画棋盘的最优解 */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 10px;
+  
+  /* 保持正方形比例 */
+  aspect-ratio: 1 / 1; 
+
+  /* 3. 如果受限于 max-width 导致棋盘变窄，保证它在容器中居中 */
+  margin: 0 auto; 
+}
+
+.cell {
+  background-color: #cdc1b4;
+  border-radius: 4px;
+  
+  /* 使用 Flexbox 让数字完美居中 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  font-size: 45px;
+  font-weight: bold;
+}
 
 /* colored tiles */
 
-.x2 {
-    background-color: #eee4da;
-    color: #727371;
+.empty {
+  background-color: #cdc1b4;
 }
 
-.x4 {
-    background-color: #ece0ca;
-    color: #727371;
+.tile-2 {
+  background-color: #efe4da;
+  color: #776e65;
 }
 
-.x8 {
-    background-color: #f4b17a;
-    color: white;
+.tile-4 {
+  background-color: #eee0c8;
+  color: #776e65;
 }
 
-.x16{
-    background-color: #f59575;
-    color: white;
+.tile-8 {
+  background-color: #f2b179;
+  color: white;
 }
 
-.x32{
-    background-color: #f57c5f;
-    color: white;
+.tile-16 {
+  background-color: #f59563;
+  color: white;
 }
 
-.x64{
-    background-color: #f65d3b;
-    color: white;
+.tile-32 {
+  background-color: #f67c5f;
+  color: white;
 }
 
-.x128{
+.tile-64 {
+  background-color: #f65e3b;
+  color: white;
+}
+
+.tile-128 {
     background-color: #edce71;
     color: white;
 }
 
-.x256{
+.tile-256 {
     background-color: #edcc63;
     color: white;
 }
 
-.x512{
+.tile-512 {
     background-color: #edc651;
     color: white;
 }
 
-.x1024{
+.tile-1024 {
     background-color: #eec744;
     color: white;
 }
 
-.x2048{
+.tile-2048 {
     background-color: #ecc230;
     color: white;
 }
 
-.x4096 {
+.tile-4096 {
     background-color: #fe3d3d;
     color: white;
 }
 
-.x8192 {
+.tile-8192 {
     background-color: #ff2020;
     color: white;
 }

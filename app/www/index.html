@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="HandheldFriendly" content="True">
@@ -11,50 +11,53 @@
     <link href="./css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <main class="container">
-        <header class="heading">
-            <h1 class="title">2048</h1>
+  <main class="game-container">
+    
+    <div class="header">
+      <div class="logo">2048</div>
+      <div class="scores">
+        <div class="score-box">
+          <span class="score-title">SCORE</span>
+          <span class="score-value">532</span>
+        </div>
+        <div class="score-box">
+          <span class="score-title">BEST</span>
+          <span class="score-value">69.6k</span>
+        </div>
+      </div>
+    </div>
 
-            <div class="scores-container">
-            <div class="score-container" data-label="分数">0
-                <span class="score-addition">+4</span>
-            </div>
-            <div class="best-container" data-label="最高分">0
-                <span class="score-addition">+4</span>
-            </div>
-            </div>
-            
-        </header>
+    <div class="controls">
+      <p class="desc">Join the numbers and get to the 2048 tile!</p>
+      <div class="buttons">
+        <button class="btn btn-new">NEW</button>
+        <button class="btn btn-undo">UNDO</button>
+      </div>
+    </div>
 
-        <section class="above-game">
-            <p class="game-intro"><strong>合并数字方块，直到得到 2048。</strong></p>
-            <button class="restart-button" type="button">新的游戏</button>
-        </section>
-
-        <section class="game-container">
-            <div class="grid-container">
-                <div class="grid x2">2</div>
-                <div class="grid x4">2</div>
-                <div class="grid x8">4</div>
-                <div class="grid x16">2</div>
-
-                <div class="grid x512">512</div>
-                <div class="grid x8">16</div>
-                <div class="grid x32">64</div>
-                <div class="grid x8">8</div>
-
-                <div class="grid x128">2</div>
-                <div class="grid x2">4</div>
-                <div class="grid x8">16</div>
-                <div class="grid x64">32</div>
-
-                <div class="grid x2">2</div>
-                <div class="grid x8">4</div>
-                <div class="grid x64">8</div>
-                <div class="grid x128">16</div>
-            </div>
-        </section>
-    </main>
+    <div class="grid-container">
+      <div class="cell tile-4">4</div>
+      <div class="cell tile-2">2</div>
+      <div class="cell empty"></div>
+      <div class="cell empty"></div>
+      
+      <div class="cell tile-8">8</div>
+      <div class="cell tile-4">4</div>
+      <div class="cell empty"></div>
+      <div class="cell empty"></div>
+      
+      <div class="cell tile-32">32</div>
+      <div class="cell tile-8">8</div>
+      <div class="cell tile-4">4</div>
+      <div class="cell tile-2">2</div>
+      
+      <div class="cell tile-64">64</div>
+      <div class="cell tile-16">16</div>
+      <div class="cell tile-8">8</div>
+      <div class="cell tile-4">4</div>
+    </div>
+    
+  </main>
 
     <script src="./js/index.js"></script>
     <script src="./js/main.js"></script>
