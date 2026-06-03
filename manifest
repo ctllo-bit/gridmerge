@@ -12,5 +12,7 @@ source                = thirdparty
 maintainer            = gabrielecirulli
 maintainer_url        = https://github.com/gabrielecirulli/2048
 distributor           = ctllo-bit
+distributor_url       = https://github.com/ctllo-bit/FnDepot
 desktop_uidir         = ui
 desktop_applaunchname = gridmerge.Application
+
