@@ -16,19 +16,35 @@ body {
 }
 
 .container {
+    /* 保持原样：限制最大宽度和两侧间距 */
     width: min(100% - 24px, 560px);
     display: flex;
     flex-direction: column;
 }
 
 .grid-container {
-    width: auto;
+    /* 1. 基础宽度拉满 container */
+    width: 100%;
+    
+    /* 2. 核心魔法：限制最大宽度不能超过视口高度减去顶部标题栏的高度 */
+    /* 这里的 180px 是预估的 <header> 和 <section class="above-game"> 的总高度，你可以根据实际情况微调 */
+    max-width: calc(100vh - 180px); 
+    
+    /* 3. 如果受限于 max-width 导致棋盘变窄，保证它在容器中居中 */
+    margin: 0 auto; 
+    
+    /* 保证是个正方形 */
     aspect-ratio: 1;
 
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
+    
+    /* 建议加上网格间隙，看起来更像 2048 */
+    gap: 10px; 
 }
+
+
 
 /* colored tiles */
 
