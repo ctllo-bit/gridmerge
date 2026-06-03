@@ -35,7 +35,7 @@ body {
   font-weight: bold;
   background-color: #ecc46b;
   color: white;
-  padding: 10px 20px;
+  padding: 10px 30px;
   border-radius: 6px;
   line-height: 1;
 }
@@ -74,7 +74,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .desc {
@@ -138,10 +138,6 @@ body {
 }
 
 /* colored tiles */
-
-.empty {
-  background-color: #cdc1b4;
-}
 
 .tile-2 {
   background-color: #efe4da;

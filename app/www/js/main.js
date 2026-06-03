@@ -1,9 +1,16 @@
 var board;
 var score = 0;
-var rows = 4;
-var columns = 4;
+const rows = 4;
+const columns = 4;
+
+// 缓存DOM
+let gridContainer;
+let scoreElement;
 
 window.onload = function() {
+    gridContainer = document.querySelector(".grid-container");
+    scoreElement  = document.querySelector(".score-value");
+
     setGame();
 }
 
@@ -20,15 +27,16 @@ function setGame() {
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0]
-    ]
+    ];
 
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < columns; c++) {
+            //<div id="0-0"></div>
             let tile = document.createElement("div");
             tile.id = r.toString() + "-" + c.toString();
             let num = board[r][c];
             updateTile(tile, num);
-            document.getElementById("board").append(tile);
+            gridContainer.append(tile);
         }
     }
     //create 2 to begin the game
@@ -40,13 +48,13 @@ function setGame() {
 function updateTile(tile, num) {
     tile.innerText = "";
     tile.classList.value = ""; //clear the classList
-    tile.classList.add("tile");
+    tile.classList.add("cell");
     if (num > 0) {
         tile.innerText = num.toString();
         if (num <= 4096) {
-            tile.classList.add("x"+num.toString());
+            tile.classList.add("tile-"+num.toString());
         } else {
-            tile.classList.add("x8192");
+            tile.classList.add("tile-8192");
         }                
     }
 }
@@ -69,7 +77,7 @@ document.addEventListener('keyup', (e) => {
         slideDown();
         setTwo();
     }
-    document.getElementById("score").innerText = score;
+    scoreElement.innerText = score;
 })
 
 function filterZero(row){
@@ -170,7 +178,7 @@ function setTwo() {
             board[r][c] = 2;
             let tile = document.getElementById(r.toString() + "-" + c.toString());
             tile.innerText = "2";
-            tile.classList.add("x2");
+            tile.classList.add("tile-2");
             found = true;
         }
     }
