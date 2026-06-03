@@ -6,7 +6,6 @@ html,body{
 body {
     background-color: #faf8ef; /* 2048 经典的米黄色背景 */
     font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
-    font-size: 18px; 
     color: #776e65;
     text-align: center;
 
@@ -27,12 +26,11 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 
 .logo {
-  font-size: 55px;
+  font-size: clamp(32px, 8vw, 53px);
   font-weight: bold;
   background-color: #ecc46b;
   color: white;
@@ -49,12 +47,12 @@ body {
 .score-box {
   background-color: #3b3a35;
   color: white;
-  padding: 8px 20px;
+  padding: 6px 12px;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 80px;
+  min-width: 60px;
 }
 
 .score-title {
@@ -64,7 +62,7 @@ body {
 }
 
 .score-value {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: bold;
   margin-top: -2px;
 }
@@ -75,12 +73,12 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 
 .desc {
-  font-size: 14px;
-  max-width: 180px;
+  font-size: 16px;
+  max-width: 200px;
 }
 
 .buttons {
