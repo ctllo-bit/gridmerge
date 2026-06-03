@@ -1,0 +1,28 @@
+{
+    "data-share":
+    {
+        "shares":
+        [
+            {
+                "name": "gridmerge",
+                "permission":
+                {
+                    "rw":
+                    [
+                        "gridmerge"
+                    ]
+                }
+            },
+            {
+                "name": "gridmerge/data",
+                "permission":
+                {
+                    "rw":
+                    [
+                        "gridmerge"
+                    ]
+                }
+            }
+        ]
+    }
+}

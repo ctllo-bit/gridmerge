@@ -1,0 +1,16 @@
+appname               = gridmerge
+version               = 1.0.0
+display_name          = Grid Merge
+desc                  = `<div>不生产代码，只做代码搬运工，适配的2048游戏。<span>
+
+游戏控制
+手机端：触屏控制，上下左右滑动
+电脑端：键盘控制，上下左右的方向键
+</span></div>`
+arch                  = all
+source                = thirdparty
+maintainer            = gabrielecirulli
+maintainer_url        = https://github.com/gabrielecirulli/2048
+distributor           = ctllo-bit
+desktop_uidir         = ui
+desktop_applaunchname = gridmerge.Application

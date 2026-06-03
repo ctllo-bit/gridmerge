@@ -1,0 +1,12 @@
+{
+    ".url": {
+        "gridmerge.Application": {
+            "title": "Grid Merge",
+            "icon": "images/icon_{0}.png",
+            "type": "iframe",
+            "protocol": "http",
+            "url": "/cgi/ThirdParty/gridmerge/index.cgi/",
+            "allUsers": true
+        }
+    }
+}
