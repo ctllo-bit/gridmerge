@@ -1,7 +1,6 @@
 var board;
 var score = 0;
-const rows = 4;
-const columns = 4;
+const rows = 4, columns = 4;
 
 // 缓存DOM
 let gridContainer;
@@ -11,61 +10,32 @@ let gameOverOverlay;
 window.onload = function() {
     gridContainer = document.querySelector(".grid-container");
     scoreElement  = document.querySelector(".score-value");
-    gameOverOverlay = document.getElementById("gameOverOverlay");    // 获取遮罩层
+    gameOverOverlay = document.getElementById("gameOverOverlay");
 
     let inputManager = new KeyboardInputManager();
 
-     // 2. 监听 "move" 事件 (代替原来的 keyup)
-    // 管理器会将按键和滑动统一转化为 0(上), 1(右), 2(下), 3(左)
+    // 响应移动（键盘或滑动）
     inputManager.on("move", function (direction) {
-        // 如果游戏已经结束，不再响应移动
         if (gameOverOverlay.style.display === "flex") {
             return; 
         }
 
-        let moveMade = false;
+        // 映射方向函数
+        const slideActions = [slideUp, slideRight, slideDown, slideLeft];
+        slideActions[direction](); 
         
-        if (direction === 0) { // 向上
-            slideUp();
-            setTwo();
-            moveMade = true;
-        } else if (direction === 1) { // 向右
-            slideRight();
-            setTwo();
-            moveMade = true;
-        } else if (direction === 2) { // 向下
-            slideDown();
-            setTwo();
-            moveMade = true;
-        } else if (direction === 3) { // 向左
-            slideLeft();
-            setTwo();
-            moveMade = true;
-        }
+        setTwo(); // 移动后生成新方块
+        scoreElement.innerText = score;
 
-        // 每次有效移动后，更新分数并检查是否游戏结束
-        if (moveMade) {
-            scoreElement.innerText = score;
-            if (checkGameOver()) {
-                gameOverOverlay.style.display = "flex";
-            }
+        if (checkGameOver()) {
+            gameOverOverlay.style.display = "flex";
         }
     });
 
+    // 响应重开（无论是点按钮还是按 R 键，统一此处处理）
+    inputManager.on("restart", resetGame);
 
-
-    // 绑定“新的”和“再来一局”按钮事件
-    document.getElementById("newGameBtn").addEventListener("click", resetGame);
-    document.getElementById("restartBtn").addEventListener("click", resetGame);
-
-        // 3. 监听 "restart" 事件 (代替原来的 click 绑定)
-    // 当玩家点击带有 .restart-button 或 .retry-button 的按钮时，或者按下 'R' 键时，会触发这里
-    inputManager.on("restart", function () {
-        resetGame();
-    });
-
-    // 初始化游戏棋盘
-    setGame();
+    setGame();// 初始化游戏棋盘
 }
 
 function setGame() {
