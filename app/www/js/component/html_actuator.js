@@ -26,8 +26,8 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
     });
 
     // // 3. 刷新分数板
-    // self.scoreContainer.innerText = metadata.score;
-    // self.bestContainer.innerText  = metadata.bestScore;
+    self.scoreValue.innerText = metadata.score;
+    self.bestValue.innerText  = metadata.bestScore;
 
     // 4. 判断并处理游戏结束状态
     if (metadata.terminated) {

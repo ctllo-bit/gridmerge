@@ -217,11 +217,14 @@ body {
   0% { opacity: 0; transform: scale(0); }
   100% { opacity: 1; transform: scale(1); }
 }
-.tile-new .tile-inner { animation: appear 200ms ease; }
 
+.tile-new .tile-inner {
+    animation: appear 200ms ease;
+}
 
-
-
+.tile-merged .tile-inner {
+    animation: pop 200ms ease;
+}
 
 
 /* --- 新增：游戏结束遮罩层 --- */

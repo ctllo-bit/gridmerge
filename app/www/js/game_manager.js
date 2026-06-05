@@ -8,7 +8,6 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
-  // this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
 
   this.setup();
 }
@@ -46,7 +45,7 @@ GameManager.prototype.setup = function () {
   //   this.keepPlaying = previousState.keepPlaying;
   // } else {
   this.grid        = new Grid(this.size);
-  //this.score       = 0;
+  this.score       = 0;
   //   this.over        = false;
   //   this.won         = false;
   //   this.keepPlaying = false;
@@ -76,22 +75,6 @@ GameManager.prototype.addRandomTile = function () {
     this.grid.insertTile(tile);
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Sends the updated grid to the actuator
