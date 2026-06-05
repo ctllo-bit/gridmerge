@@ -9,16 +9,19 @@ body {
     color: #776e65;
     text-align: center;
 
-    display: flex;
+    /* 自然拉开顶部留白，还原原版悬挂感 */
+    display: block; 
     min-height: 100vh;
-    justify-content: center;
+    padding-top: 40px; 
+    box-sizing: border-box;
 }
 
 .game-container {
-    /* 保持原样：限制最大宽度和两侧间距 */
-    width: min(100% - 24px, 560px);
+    /* 还原经典原版 500px 饱满尺寸 */
+    width: min(100% - 32px, 500px); 
     display: flex;
     flex-direction: column;
+    margin: 0 auto; 
 }
 
 /* --- 顶部：Logo 与 分数板 --- */
@@ -29,57 +32,58 @@ body {
   margin-top: 15px;
 }
 
-
 .logo {
   font-size: clamp(32px, 8vw, 53px);
   font-weight: bold;
-  background-color: #ecc46b;
+  background-color: #edc22e; /* 修正：还原原版纯正金黄色 */
   color: white;
-  padding: 10px 30px;
+  padding: 10px 24px;
   border-radius: 6px;
   line-height: 1;
 }
 
 .scores {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .score-box {
-  background-color: #3b3a35;
+  background-color: #bbada0; /* 修正：原版分数框其实是浅褐色的 */
   color: white;
-  padding: 6px 12px;
+  padding: 6px 15px;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 60px;
+  min-width: 55px;
 }
 
 .score-title {
   font-size: 13px;
   font-weight: bold;
   color: #eee4da;
+  text-transform: uppercase;
 }
 
 .score-value {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: bold;
+  color: white;
   margin-top: -2px;
 }
-
 
 /* --- 中部：文字说明与按钮 --- */
 .controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-top: 15px;
 }
 
 .desc {
   font-size: 16px;
-  max-width: 200px;
+  text-align: left;
+  line-height: 1.4;
 }
 
 .buttons {
@@ -88,11 +92,11 @@ body {
 }
 
 .btn {
-  background-color: #f75e4f;
+  background-color: #8f7a66; /* 修正：原版“新游戏”按钮其实是低调的深褐色 */
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 12px 18px;
+  padding: 10px 18px;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
@@ -100,119 +104,96 @@ body {
 
 /* --- 底部：4x4 游戏棋盘 --- */
 .grid-container {
-  /* 1. 基础宽度拉满 container */
-  width: 95%;
-  /* 2. 核心魔法：限制最大宽度不能超过视口高度减去顶部标题栏的高度 */
-  /* 这里的 180px 是预估的 <header> 和 <section class="above-game"> 的总高度，你可以根据实际情况微调 */
-  max-width: calc(100vh - 200px); 
-  /* 保持正方形比例 */
+  width: 100%;
+  max-width: 100%; 
   aspect-ratio: 1 / 1; 
+  box-sizing: border-box;
 
-  /* 如果受限于 max-width 导致棋盘变窄，保证它在容器中居中 */
-  margin: 0 auto; 
+  margin: 30px auto 0 auto; /* 舒适的棋盘上方间距 */
 
   background-color: #a4968b;
-  padding: 10px;
-  border-radius: 8px;
+  padding: 12px;
+  border-radius: 6px;
   
-  /* CSS Grid 是画棋盘的最优解 */
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  gap: 10px;
+  gap: 12px;
 
-  position: relative; /* 增加这行，让遮罩层相对于棋盘定位 */
+  position: relative; 
 }
 
 .grid-cell {
   background-color: #cdc1b4;
-  border-radius: 4px;
-  
-  /* 使用 Flexbox 让数字完美居中 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
-  /* 45px 左右是极限大，但在小屏幕下它会随着棋盘变小而变小（约为棋盘宽度的 11%） */
-  font-size: clamp(16px, 11cqw, 45px);
-  font-weight: bold;
+  border-radius: 3px;
 }
 
-
-/* 1. 调整方块容器，让它精确覆盖在网格内部（扣除外围 10px 的 padding） */
+/* 动态方块的绝对定位容器 */
 .tile-container {
   position: absolute;
   z-index: 2;
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  bottom: 10px;
-  pointer-events: none; /* 防止挡住鼠标或手势事件 */
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  pointer-events: none; 
 }
 
-/* 2. 动态方块的外壳：只负责控制绝对定位、大小以及滑动的 Transition */
-/* 确保这段代码在你的 CSS 中保持不变，这是滑动的灵魂 */
 .tile {
   position: absolute;
-  width: calc((100% - 30px) / 4);
-  height: calc((100% - 30px) / 4);
-  /* 这里的 100ms 必须与上面动画的 100ms 延迟一致 */
+  width: calc((100% - 36px) / 4);
+  height: calc((100% - 36px) / 4);
   transition: 100ms ease-in-out; 
   transition-property: transform;
 }
 
-
-/* 3. 方块的内心：负责承载数字、居中、背景色和出现/合并动画 */
 .tile .tile-inner {
   width: 100%;
   height: 100%;
-  border-radius: 4px;
+  border-radius: 3px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: clamp(16px, 11cqw, 45px);
+  font-size: clamp(20px, 11cqw, 48px);
   font-weight: bold;
 }
 
-/* 4. 响应式坐标矩阵（核心：100% 自身宽 + 10px 间距） */
-/* 第一行 (y = 0) */
-.tile-position-0-0 { transform: translate(calc(0 * (100% + 10px)), calc(0 * (100% + 10px))); }
-.tile-position-0-1 { transform: translate(calc(1 * (100% + 10px)), calc(0 * (100% + 10px))); }
-.tile-position-0-2 { transform: translate(calc(2 * (100% + 10px)), calc(0 * (100% + 10px))); }
-.tile-position-0-3 { transform: translate(calc(3 * (100% + 10px)), calc(0 * (100% + 10px))); }
-/* 第二行 (y = 1) */
-.tile-position-1-0 { transform: translate(calc(0 * (100% + 10px)), calc(1 * (100% + 10px))); }
-.tile-position-1-1 { transform: translate(calc(1 * (100% + 10px)), calc(1 * (100% + 10px))); }
-.tile-position-1-2 { transform: translate(calc(2 * (100% + 10px)), calc(1 * (100% + 10px))); }
-.tile-position-1-3 { transform: translate(calc(3 * (100% + 10px)), calc(1 * (100% + 10px))); }
-/* 第三行 (y = 2) */
-.tile-position-2-0 { transform: translate(calc(0 * (100% + 10px)), calc(2 * (100% + 10px))); }
-.tile-position-2-1 { transform: translate(calc(1 * (100% + 10px)), calc(2 * (100% + 10px))); }
-.tile-position-2-2 { transform: translate(calc(2 * (100% + 10px)), calc(2 * (100% + 10px))); }
-.tile-position-2-3 { transform: translate(calc(3 * (100% + 10px)), calc(2 * (100% + 10px))); }
-/* 第四行 (y = 3) */
-.tile-position-3-0 { transform: translate(calc(0 * (100% + 10px)), calc(3 * (100% + 10px))); }
-.tile-position-3-1 { transform: translate(calc(1 * (100% + 10px)), calc(3 * (100% + 10px))); }
-.tile-position-3-2 { transform: translate(calc(2 * (100% + 10px)), calc(3 * (100% + 10px))); }
-.tile-position-3-3 { transform: translate(calc(3 * (100% + 10px)), calc(3 * (100% + 10px))); }
+/* --- 🌟 修正后的响应式坐标矩阵（行 row / 列 col 顺畅对应） --- */
+/* 第一行 (row = 0) */
+.tile-position-0-0 { transform: translate(calc(0 * (100% + 12px)), calc(0 * (100% + 12px))); }
+.tile-position-0-1 { transform: translate(calc(1 * (100% + 12px)), calc(0 * (100% + 12px))); }
+.tile-position-0-2 { transform: translate(calc(2 * (100% + 12px)), calc(0 * (100% + 12px))); }
+.tile-position-0-3 { transform: translate(calc(3 * (100% + 12px)), calc(0 * (100% + 12px))); }
+/* 第二行 (row = 1) */
+.tile-position-1-0 { transform: translate(calc(0 * (100% + 12px)), calc(1 * (100% + 12px))); }
+.tile-position-1-1 { transform: translate(calc(1 * (100% + 12px)), calc(1 * (100% + 12px))); }
+.tile-position-1-2 { transform: translate(calc(2 * (100% + 12px)), calc(1 * (100% + 12px))); }
+.tile-position-1-3 { transform: translate(calc(3 * (100% + 12px)), calc(1 * (100% + 12px))); }
+/* 第三行 (row = 2) */
+.tile-position-2-0 { transform: translate(calc(0 * (100% + 12px)), calc(2 * (100% + 12px))); }
+.tile-position-2-1 { transform: translate(calc(1 * (100% + 12px)), calc(2 * (100% + 12px))); }
+.tile-position-2-2 { transform: translate(calc(2 * (100% + 12px)), calc(2 * (100% + 12px))); }
+.tile-position-2-3 { transform: translate(calc(3 * (100% + 12px)), calc(2 * (100% + 12px))); }
+/* 第四行 (row = 3) */
+.tile-position-3-0 { transform: translate(calc(0 * (100% + 12px)), calc(3 * (100% + 12px))); }
+.tile-position-3-1 { transform: translate(calc(1 * (100% + 12px)), calc(3 * (100% + 12px))); }
+.tile-position-3-2 { transform: translate(calc(2 * (100% + 12px)), calc(3 * (100% + 12px))); }
+.tile-position-3-3 { transform: translate(calc(3 * (100% + 12px)), calc(3 * (100% + 12px))); }
 
-/* 5. 修正颜色样式的绑定：把背景色挂到 tile-inner 上 */
-
+/* --- 方块数字背景色 --- */
 .tile-2 .tile-inner { background-color: #efe4da; color: #776e65; }
 .tile-4 .tile-inner { background-color: #eee0c8; color: #776e65; }
 .tile-8 .tile-inner { background-color: #f2b179; color: white;  }
 .tile-16 .tile-inner { background-color: #f59563; color: white; }
 .tile-32 .tile-inner { background-color: #f67c5f; color: white; }
 .tile-64 .tile-inner { background-color: #f65e3b; color: white; }
-.tile-128 .tile-inner { background-color: #edce71; color: white; }
-.tile-256 .tile-inner { background-color: #edcc63; color: white; }
-.tile-512 .tile-inner { background-color: #edc651; color: white; }
-.tile-1024 .tile-inner { background-color: #eec744; color: white; }
-.tile-2048 .tile-inner { background-color: #ecc230; color: white; }
-.tile-4096 .tile-inner { background-color: #fe3d3d; color: white; }
-.tile-8192 .tile-inner { background-color: #ff2020; color: white; }
-
-
+.tile-128 .tile-inner { background-color: #edce71; color: white; font-size: clamp(16px, 9cqw, 40px); }
+.tile-256 .tile-inner { background-color: #edcc63; color: white; font-size: clamp(16px, 9cqw, 40px); }
+.tile-512 .tile-inner { background-color: #edc651; color: white; font-size: clamp(16px, 9cqw, 40px); }
+.tile-1024 .tile-inner { background-color: #eec744; color: white; font-size: clamp(12px, 7cqw, 32px); }
+.tile-2048 .tile-inner { background-color: #ecc230; color: white; font-size: clamp(12px, 7cqw, 32px); }
+.tile-4096 .tile-inner { background-color: #fe3d3d; color: white; font-size: clamp(12px, 7cqw, 32px); }
+.tile-8192 .tile-inner { background-color: #ff2020; color: white; font-size: clamp(12px, 7cqw, 32px); }
 
 /* 新生成的方块放大动画 */
 @keyframes appear {
@@ -220,54 +201,43 @@ body {
   100% { opacity: 1; transform: scale(1); }
 }
 
-/* 新生成的方块放大动画 */
 .tile-new .tile-inner {
-  /* 200ms 持续时间，ease 缓动，100ms 延迟 */
   animation: appear 200ms ease 100ms;
   animation-fill-mode: backwards;
 }
 
 @keyframes pop {
-  0% {
-    transform: scale(0);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
 }
 
 /* 合并时的弹跳动画 */
 .tile-merged .tile-inner {
-  z-index: 20; /* 提升 z-index 确保弹跳放大时盖过相邻的方块 */
+  z-index: 20; 
   animation: pop 200ms ease 100ms;
   animation-fill-mode: backwards;
 }
 
-
-/* --- 新增：游戏结束遮罩层 --- */
+/* 游戏结束遮罩层 */
 .game-over {
   position: absolute;
   top: 0; 
   left: 0; 
   width: 100%; 
   height: 100%;
-  background: rgba(238, 228, 218, 0.75); /* 半透明背景 */
-  display: none; /* 默认隐藏，JS 触发时改为 flex */
+  background: rgba(238, 228, 218, 0.73); 
+  display: none; 
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: 8px;
+  border-radius: 6px;
   z-index: 10;
 }
 
 .game-over h2 {
-  font-size: 40px;
+  font-size: 60px;
   font-weight: bold;
   color: #776e65;
-  margin-top: 0;
-  margin-bottom: 20px;
+  margin: 0 0 20px 0;
 }
-
