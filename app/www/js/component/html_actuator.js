@@ -2,19 +2,21 @@ function HTMLActuator() {
   this.tileContainer = document.querySelector(".tile-container");
   this.scoreValue    = document.querySelector(".score-value");
   this.bestValue     = document.querySelector(".best-value");
-  this.gameOverOverlay = document.querySelector(".game-over");
+  this.gameOverOverlay = document.getElementById("gameOverOverlay");
 
   this.score = 0;
 }
 
+// 核心渲染主网关：GameManager 每次算完棋盘都会调用它
 HTMLActuator.prototype.actuate = function (grid, metadata) {
   var self = this;
 
+  // 使用 requestAnimationFrame 确保在浏览器最佳绘制时机渲染，防止动画卡顿
   window.requestAnimationFrame(function () {
-    // 1. 每次渲染前，清空旧的方块 DOM
+    // 1. 清空上一帧留下的所有旧方块 DOM
     self.clearContainer(self.tileContainer);
 
-    // 2. 遍历网格里的每一个方块实体
+    // 2. 重新遍历二维网格，发现哪里有方块实体，就画到页面上
     grid.cells.forEach(function (column) {
       column.forEach(function (cell) {
         if(cell){
@@ -23,8 +25,21 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
       });
     });
 
+    // // 3. 刷新分数板
+    // self.scoreContainer.innerText = metadata.score;
+    // self.bestContainer.innerText  = metadata.bestScore;
+
+    // 4. 判断并处理游戏结束状态
+    if (metadata.terminated) {
+      if (metadata.over) {
+        self.gameOverOverlay.style.display = "flex"; // 显示游戏结束
+      }
+    }
+
 // 3. 更新分数等 UI
-  //self.updateScore(metadata.score);
+ // self.updateScore(metadata.score);
+
+
   //   self.updateBestScore(metadata.bestScore);
 
   //   if (metadata.terminated) {
@@ -33,16 +48,12 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
   //     } else if (metadata.won) {
   //       self.message(true); // You win!
   //     }
-  //   }
+  // }
 
 
   });
 };
 
-// Continues the game (both restart and keep playing)
-HTMLActuator.prototype.continueGame = function () {
-  this.clearMessage();
-};
 
 HTMLActuator.prototype.clearContainer = function (container) {
   while (container.firstChild) {
@@ -50,11 +61,12 @@ HTMLActuator.prototype.clearContainer = function (container) {
   }
 };
 
+// 核心方法：动态构建方块 DOM 并插入页面
 HTMLActuator.prototype.addTile = function (tile) {
   console.log('ffffffffffffffffffffffffffff');
 
-  var wrapper = document.createElement("div");
-  var inner   = document.createElement("div");
+  var wrapper = document.createElement("div");//外层（wrapper） 只用来管一件事：移动（transform: translate）。
+  var inner   = document.createElement("div");//内层（inner） 只用来管一件事：缩放（transform: scale）。
 
   // 将方块的当前坐标转换为 CSS 类名（触发移动动画的关键）
   var positionClass = "tile-position-" + tile.x + "-" + tile.y;
@@ -80,6 +92,10 @@ HTMLActuator.prototype.addTile = function (tile) {
   this.tileContainer.appendChild(wrapper);
 };
 
+// 辅助方法：清除可能存在的上一局输赢状态画面
+HTMLActuator.prototype.continueGame = function () {
+  this.gameOverOverlay.style.display = "none";
+};
 
 // HTMLActuator.prototype.addTile = function (tile) {
 
