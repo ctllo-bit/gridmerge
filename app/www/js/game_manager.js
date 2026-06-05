@@ -12,11 +12,10 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.setup();
 }
 
-
 // Restart the game
 GameManager.prototype.restart = function () {
   this.storageManager.clearGameState();
-  this.actuator.clearMessage();
+  this.actuator.continueGame();
   this.setup();
 };
 
@@ -24,6 +23,7 @@ GameManager.prototype.restart = function () {
 GameManager.prototype.isGameTerminated = function () {
   return this.over;
 };
+
 
 // Set up the game
 GameManager.prototype.setup = function () {
@@ -38,14 +38,14 @@ GameManager.prototype.setup = function () {
     this.grid        = new Grid(this.size);
     this.score       = 0;
     this.over        = false;
-  // Add the initial tiles
-  this.addStartTiles();
+
+    // Add the initial tiles
+    this.addStartTiles();
   }
 
   // Update the actuator
   this.actuate();
 };
-
 
 // Set up the initial tiles to start the game with
 GameManager.prototype.addStartTiles = function () {

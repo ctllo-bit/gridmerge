@@ -173,18 +173,7 @@ HTMLActuator.prototype.updateBestScore = function (bestScore) {
   this.bestContainer.textContent = bestScore;
 };
 
-HTMLActuator.prototype.message = function (won) {
-  // var type    = won ? "game-won" : "game-over";
-  // var message = won ? "You win!" : "Game over!";
-
-  // this.messageContainer.classList.add(type);
-  // this.messageContainer.getElementsByTagName("p")[0].textContent = message;
-};
-
-HTMLActuator.prototype.clearMessage = function () {
+// Continues the game (both restart and keep playing)
+HTMLActuator.prototype.continueGame = function () {
   this.gameOverOverlay.style.display = "none"; 
-
-  // // IE only takes one value to remove at a time.
-  // this.messageContainer.classList.remove("game-won");
-  // this.messageContainer.classList.remove("game-over");
 };
