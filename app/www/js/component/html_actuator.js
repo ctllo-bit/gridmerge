@@ -53,9 +53,6 @@ HTMLActuator.prototype.addTile = function (tile) {
 
   // 2. 组装基础类名
   const classes = ["tile", `tile-${tile.value}`, positionClass];
-  if (tile.value > 2048) {
-    classes.push("tile-super");
-  }
 
   // 3. 核心动画状态机
   if (tile.previousPosition) {
@@ -91,34 +88,7 @@ HTMLActuator.prototype.normalizePosition = function (position) {
   return { x: position.x + 1, y: position.y + 1 };
 };
 
-HTMLActuator.prototype.positionClass = function (position) {
-  position = this.normalizePosition(position);
-  return "tile-position-" + position.x + "-" + position.y;
-};
-
-HTMLActuator.prototype.updateScore = function (score) {
-  this.clearContainer(this.scoreContainer);
-
-  var difference = score - this.score;
-  this.score = score;
-
-  this.scoreContainer.textContent = this.score;
-
-  if (difference > 0) {
-    var addition = document.createElement("div");
-    addition.classList.add("score-addition");
-    addition.textContent = "+" + difference;
-
-    this.scoreContainer.appendChild(addition);
-  }
-};
-
-HTMLActuator.prototype.updateBestScore = function (bestScore) {
-  this.bestContainer.textContent = bestScore;
-};
-
 // Continues the game (both restart and keep playing)
 HTMLActuator.prototype.continueGame = function () {
   this.gameOverOverlay.style.display = "none"; 
 };
-

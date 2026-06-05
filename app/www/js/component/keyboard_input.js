@@ -50,18 +50,18 @@ KeyboardInputManager.prototype.listen = function () {
 
   // 移动端滑动监听
   let touchStartStatus = { x: 0, y: 0 };
-  let gameContainer = document.querySelector(".game-container");
+  let eventOptions = window.navigator.msPointerEnabled ? false : { passive: false };
 
-  gameContainer.addEventListener("touchstart", function (event) {
+  document.addEventListener("touchstart", function (event) {
     if (event.touches.length > 1) return; // 忽略多指触控
     touchStartStatus.x = event.touches[0].clientX;
     touchStartStatus.y = event.touches[0].clientY;
     event.preventDefault();
-  }, { passive: false });
+  }, eventOptions);
 
-  gameContainer.addEventListener("touchmove", event => event.preventDefault(), { passive: false });
+  document.addEventListener("touchmove", event => event.preventDefault(), eventOptions);
 
-  gameContainer.addEventListener("touchend", function (event) {
+  document.addEventListener("touchend", function (event) {
     if (event.touches.length > 0) return;
 
     let dx = event.changedTouches[0].clientX - touchStartStatus.x;
