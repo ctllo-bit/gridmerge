@@ -245,67 +245,16 @@ body {
 
 /* colored tiles */
 
-.tile-2 {
-  background-color: #efe4da;
-  color: #776e65;
-}
-
-.tile-4 {
-  background-color: #eee0c8;
-  color: #776e65;
-}
-
-.tile-8 {
-  background-color: #f2b179;
-  color: white;
-}
-
-.tile-16 {
-  background-color: #f59563;
-  color: white;
-}
-
-.tile-32 {
-  background-color: #f67c5f;
-  color: white;
-}
-
-.tile-64 {
-  background-color: #f65e3b;
-  color: white;
-}
-
-.tile-128 {
-    background-color: #edce71;
-    color: white;
-}
-
-.tile-256 {
-    background-color: #edcc63;
-    color: white;
-}
-
-.tile-512 {
-    background-color: #edc651;
-    color: white;
-}
-
-.tile-1024 {
-    background-color: #eec744;
-    color: white;
-}
-
-.tile-2048 {
-    background-color: #ecc230;
-    color: white;
-}
-
-.tile-4096 {
-    background-color: #fe3d3d;
-    color: white;
-}
-
-.tile-8192 {
-    background-color: #ff2020;
-    color: white;
-}
+.tile-2 { background-color: #efe4da; color: #776e65; }
+.tile-4 { background-color: #eee0c8; color: #776e65; }
+.tile-8 { background-color: #f2b179; color: white;  }
+.tile-16 { background-color: #f59563; color: white; }
+.tile-32 { background-color: #f67c5f; color: white; }
+.tile-64 { background-color: #f65e3b; color: white; }
+.tile-128 { background-color: #edce71; color: white; }
+.tile-256 { background-color: #edcc63; color: white; }
+.tile-512 { background-color: #edc651; color: white; }
+.tile-1024 { background-color: #eec744; color: white; }
+.tile-2048 { background-color: #ecc230; color: white; }
+.tile-4096 { background-color: #fe3d3d; color: white; }
+.tile-8192 { background-color: #ff2020; color: white; }
