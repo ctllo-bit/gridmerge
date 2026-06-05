@@ -56,11 +56,12 @@ GameManager.prototype.setup = function () {
   // }
 
   // Update the actuator
-  //this.actuate();
+  this.actuate();
 };
 
 // Sends the updated grid to the actuator
 GameManager.prototype.actuate = function () {
+  console.log("kkkkkkkkkkkkk");
   // if (this.storageManager.getBestScore() < this.score) {
   //   this.storageManager.setBestScore(this.score);
   // }
@@ -72,13 +73,12 @@ GameManager.prototype.actuate = function () {
   //   this.storageManager.setGameState(this.serialize());
   // }
 
-  // this.actuator.actuate(this.grid, {
-  //   score:      this.score,
-  //   over:       this.over,
-  //   won:        this.won,
-  //   bestScore:  this.storageManager.getBestScore(),
-  //   terminated: this.isGameTerminated()
-  // });
+  this.actuator.actuate(this.grid, {
+    score:      this.score,
+    over:       false,
+    bestScore:  1024,
+    terminated: false
+  });
 
 };
 

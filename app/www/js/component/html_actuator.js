@@ -1,19 +1,10 @@
 function HTMLActuator() {
-  // this.tileContainer    = document.querySelector(".tile-container");
+  this.tileContainer = document.querySelector(".tile-container");
+  this.scoreValue    = document.querySelector(".score-value");
+  this.bestValue     = document.querySelector(".best-value");
+  this.gameOverOverlay = document.querySelector(".game-over");
 
-
-
-  // this.scoreContainer   = document.querySelector(".score-container");
-  // this.bestContainer    = document.querySelector(".best-container");
-
-
-
-
-  // this.messageContainer = document.querySelector(".game-message");
-
-  // this.score = 0;
-
-  console.log("ffffffffffffffffffffffffffffffffffffffffff");
+  this.score = 0;
 }
 
 HTMLActuator.prototype.actuate = function (grid, metadata) {
@@ -24,22 +15,25 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
 
     grid.cells.forEach(function (column) {
       column.forEach(function (cell) {
-        if (cell) {
-          self.addTile(cell);
-        }
+        console.log(cell);
+    //     if (cell) {
+    //       console.log("666666666666666666666666666666");
+    //       self.addTile(cell);
+    //     }
       });
     });
 
-    self.updateScore(metadata.score);
-    self.updateBestScore(metadata.bestScore);
 
-    if (metadata.terminated) {
-      if (metadata.over) {
-        self.message(false); // You lose
-      } else if (metadata.won) {
-        self.message(true); // You win!
-      }
-    }
+  //self.updateScore(metadata.score);
+  //   self.updateBestScore(metadata.bestScore);
+
+  //   if (metadata.terminated) {
+  //     if (metadata.over) {
+  //       self.message(false); // You lose
+  //     } else if (metadata.won) {
+  //       self.message(true); // You win!
+  //     }
+  //   }
 
   });
 };
@@ -56,6 +50,9 @@ HTMLActuator.prototype.clearContainer = function (container) {
 };
 
 HTMLActuator.prototype.addTile = function (tile) {
+
+  console.log("wwwwffffffffffffff");
+
   var self = this;
 
   var wrapper   = document.createElement("div");
