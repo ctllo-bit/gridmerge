@@ -65,7 +65,6 @@ GameManager.prototype.addRandomTile = function () {
 
 // Sends the updated grid to the actuator
 GameManager.prototype.actuate = function () {
-  console.log("kkkkkkkkkkkkk");
   if (this.storageManager.getBestScore() < this.score) {
     this.storageManager.setBestScore(this.score);
   }
@@ -79,16 +78,12 @@ GameManager.prototype.actuate = function () {
 
   this.actuator.actuate(this.grid, {
     score:      this.score,
-    over:       false,
+    over:       this.over,
     bestScore:  this.storageManager.getBestScore(),
     terminated: this.isGameTerminated()
   });
 
-  // 自己不碰 DOM，全权交给 actuator 处理
-  //this.actuator.actuate(this.grid, { score: this.score, over: this.over });
-
 };
-
 
 // Represent the current game as an object
 GameManager.prototype.serialize = function () {
@@ -98,10 +93,6 @@ GameManager.prototype.serialize = function () {
     over:        this.over
   };
 };
-
-
-
-
   // 1. 遍历并记录所有方块的当前位置 (tile.savePosition())
   // 2. 根据你的滑动逻辑，计算新的二维数组（注意：合并时生成新的 Tile 对象）
   // 3. 更新每个方块的新坐标 (tile.updatePosition(newCell))
