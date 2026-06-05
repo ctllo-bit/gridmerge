@@ -80,12 +80,20 @@ GameManager.prototype.actuate = function () {
     terminated: false
   });
 
+  // 自己不碰 DOM，全权交给 actuator 处理
+  //this.actuator.actuate(this.grid, { score: this.score, over: this.over });
+
 };
 
 
 
 // Move tiles on the grid in the specified direction
 GameManager.prototype.move = function (direction) {
+
+  // 1. 遍历并记录所有方块的当前位置 (tile.savePosition())
+  // 2. 根据你的滑动逻辑，计算新的二维数组（注意：合并时生成新的 Tile 对象）
+  // 3. 更新每个方块的新坐标 (tile.updatePosition(newCell))
+  // 4. 计算完毕后，呼叫渲染器，把数据丢给它去画图
 
   console.log("Move");
 

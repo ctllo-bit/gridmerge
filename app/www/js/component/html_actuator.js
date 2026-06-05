@@ -11,8 +11,10 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
   var self = this;
 
   window.requestAnimationFrame(function () {
+    // 1. 每次渲染前，清空旧的方块 DOM
     self.clearContainer(self.tileContainer);
 
+    // 2. 遍历网格里的每一个方块实体
     grid.cells.forEach(function (column) {
       column.forEach(function (cell) {
         console.log(cell);
@@ -23,7 +25,7 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
       });
     });
 
-
+// 3. 更新分数等 UI
   //self.updateScore(metadata.score);
   //   self.updateBestScore(metadata.bestScore);
 
@@ -50,51 +52,80 @@ HTMLActuator.prototype.clearContainer = function (container) {
 };
 
 HTMLActuator.prototype.addTile = function (tile) {
+  var wrapper = document.createElement("div");
+  var inner   = document.createElement("div");
 
-  console.log("wwwwffffffffffffff");
+  // 将方块的当前坐标转换为 CSS 类名（触发移动动画的关键）
+  var positionClass = "tile-position-" + tile.x + "-" + tile.y;
 
-  var self = this;
-
-  var wrapper   = document.createElement("div");
-  var inner     = document.createElement("div");
-  var position  = tile.previousPosition || { x: tile.x, y: tile.y };
-  var positionClass = this.positionClass(position);
-
-  // We can't use classlist because it somehow glitches when replacing classes
+  // 基本样式
   var classes = ["tile", "tile-" + tile.value, positionClass];
 
-  if (tile.value > 2048) classes.push("tile-super");
-
-  this.applyClasses(wrapper, classes);
-
-  inner.classList.add("tile-inner");
-  inner.textContent = tile.value;
-
-  if (tile.previousPosition) {
-    // Make sure that the tile gets rendered in the previous position first
-    window.requestAnimationFrame(function () {
-      classes[2] = self.positionClass({ x: tile.x, y: tile.y });
-      self.applyClasses(wrapper, classes); // Update the position
-    });
-  } else if (tile.mergedFrom) {
-    classes.push("tile-merged");
-    this.applyClasses(wrapper, classes);
-
-    // Render the tiles that merged
-    tile.mergedFrom.forEach(function (merged) {
-      self.addTile(merged);
-    });
-  } else {
+  // 如果它是一个新生成的方块，加上出现动画类名
+  if (tile.previousPosition === null && !tile.mergedFrom) {
     classes.push("tile-new");
-    this.applyClasses(wrapper, classes);
+  } 
+  // 如果是合并出来的，加上弹跳动画类名
+  else if (tile.mergedFrom) {
+    classes.push("tile-merged");
   }
 
-  // Add the inner part of the tile to the wrapper
-  wrapper.appendChild(inner);
+  // 拼接类名并渲染到屏幕上
+  wrapper.className = classes.join(" ");
+  inner.className = "tile-inner";
+  inner.innerText = tile.value;
 
-  // Put the tile on the board
+  wrapper.appendChild(inner);
   this.tileContainer.appendChild(wrapper);
 };
+
+
+// HTMLActuator.prototype.addTile = function (tile) {
+
+//   console.log("wwwwffffffffffffff");
+
+//   var self = this;
+
+//   var wrapper   = document.createElement("div");
+//   var inner     = document.createElement("div");
+//   var position  = tile.previousPosition || { x: tile.x, y: tile.y };
+//   var positionClass = this.positionClass(position);
+
+//   // We can't use classlist because it somehow glitches when replacing classes
+//   var classes = ["tile", "tile-" + tile.value, positionClass];
+
+//   if (tile.value > 2048) classes.push("tile-super");
+
+//   this.applyClasses(wrapper, classes);
+
+//   inner.classList.add("tile-inner");
+//   inner.textContent = tile.value;
+
+//   if (tile.previousPosition) {
+//     // Make sure that the tile gets rendered in the previous position first
+//     window.requestAnimationFrame(function () {
+//       classes[2] = self.positionClass({ x: tile.x, y: tile.y });
+//       self.applyClasses(wrapper, classes); // Update the position
+//     });
+//   } else if (tile.mergedFrom) {
+//     classes.push("tile-merged");
+//     this.applyClasses(wrapper, classes);
+
+//     // Render the tiles that merged
+//     tile.mergedFrom.forEach(function (merged) {
+//       self.addTile(merged);
+//     });
+//   } else {
+//     classes.push("tile-new");
+//     this.applyClasses(wrapper, classes);
+//   }
+
+//   // Add the inner part of the tile to the wrapper
+//   wrapper.appendChild(inner);
+
+//   // Put the tile on the board
+//   this.tileContainer.appendChild(wrapper);
+// };
 
 HTMLActuator.prototype.applyClasses = function (element, classes) {
   element.setAttribute("class", classes.join(" "));

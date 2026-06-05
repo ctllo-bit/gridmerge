@@ -138,6 +138,41 @@ body {
   font-weight: bold;
 }
 
+.tile-container {
+  position: absolute; /* 绝对定位，覆盖在底框之上 */
+  z-index: 2;
+  top: 0; left: 0;
+}
+
+
+.tile {
+  position: absolute;
+  /* 这是滑动的关键！任何位置变化，都会在 100 毫秒内平滑过渡 */
+  transition: 100ms ease-in-out;
+  transition-property: transform;
+}
+
+
+/* 预先写好 16 个位置的坐标类名 (假设格子大小+间距是 120px) */
+.tile-position-0-0 { transform: translate(0px, 0px); }
+.tile-position-0-1 { transform: translate(120px, 0px); }
+.tile-position-0-2 { transform: translate(240px, 0px); }
+/* ... 你需要把 4x4 的 16 个位置都写出来 ... */
+
+
+
+/* 新生成的方块放大动画 */
+@keyframes appear {
+  0% { opacity: 0; transform: scale(0); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.tile-new .tile-inner { animation: appear 200ms ease; }
+
+
+
+
+
+
 /* --- 新增：游戏结束遮罩层 --- */
 .game-over {
   position: absolute;
