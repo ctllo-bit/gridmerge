@@ -24,10 +24,9 @@ GameManager.prototype.isGameTerminated = function () {
   return this.over;
 };
 
-
 // Set up the game
 GameManager.prototype.setup = function () {
-  var previousState = this.storageManager.getGameState();
+  let previousState = this.storageManager.getGameState();
 
   // Reload the game from a previous game if present
   if (previousState) {
@@ -49,7 +48,7 @@ GameManager.prototype.setup = function () {
 
 // Set up the initial tiles to start the game with
 GameManager.prototype.addStartTiles = function () {
-  for (var i = 0; i < this.startTiles; i++) {
+  for (let i = 0; i < this.startTiles; i++) {
     this.addRandomTile();
   }
 };
@@ -57,13 +56,12 @@ GameManager.prototype.addStartTiles = function () {
 // Adds a tile in a random position
 GameManager.prototype.addRandomTile = function () {
   if (this.grid.cellsAvailable()) {
-    var value = Math.random() < 0.9 ? 2 : 4;
-    var tile = new Tile(this.grid.randomAvailableCell(), value);
+    let value = Math.random() < 0.9 ? 2 : 4;
+    let tile = new Tile(this.grid.randomAvailableCell(), value);
 
     this.grid.insertTile(tile);
   }
 };
-
 
 // Sends the updated grid to the actuator
 GameManager.prototype.actuate = function () {
