@@ -124,7 +124,7 @@ body {
   position: relative; /* 增加这行，让遮罩层相对于棋盘定位 */
 }
 
-.cell {
+.grid-cell {
   background-color: #cdc1b4;
   border-radius: 4px;
   
