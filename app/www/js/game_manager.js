@@ -105,17 +105,13 @@ GameManager.prototype.actuate = function () {
 
 
 
-// Move tiles on the grid in the specified direction
-GameManager.prototype.move = function (direction) {
+
 
   // 1. 遍历并记录所有方块的当前位置 (tile.savePosition())
   // 2. 根据你的滑动逻辑，计算新的二维数组（注意：合并时生成新的 Tile 对象）
   // 3. 更新每个方块的新坐标 (tile.updatePosition(newCell))
   // 4. 计算完毕后，呼叫渲染器，把数据丢给它去画图
 
-  console.log("Move");
-
-};
 
 // Move tiles on the grid in the specified direction
 GameManager.prototype.move = function (direction) {
@@ -124,11 +120,11 @@ GameManager.prototype.move = function (direction) {
 
   // if (this.isGameTerminated()) return; // Don't do anything if the game's over
 
-  var cell, tile;
+  let cell, tile;
 
-  var vector     = this.getVector(direction);
-  var traversals = this.buildTraversals(vector);
-  var moved      = false;
+  let vector     = this.getVector(direction);
+  let traversals = this.buildTraversals(vector);
+  let moved      = false;
 
   // Save the current tile positions and remove merger information
   this.prepareTiles();
@@ -156,9 +152,6 @@ GameManager.prototype.move = function (direction) {
 
           // Update the score
           self.score += merged.value;
-
-          // The mighty 2048 tile
-          if (merged.value === 2048) self.won = true;
         } else {
           self.moveTile(tile, positions.farthest);
         }
@@ -189,14 +182,13 @@ GameManager.prototype.moveTile = function (tile, cell) {
 };
 
 
-// Get the vector representing the chosen direction
+// 获取代表所选方向的向量（已根据你的矩阵渲染逻辑进行了转置修正）
 GameManager.prototype.getVector = function (direction) {
-  // Vectors representing tile movement
   var map = {
-    0: { x: 0,  y: -1 }, // Up
-    1: { x: 1,  y: 0 },  // Right
-    2: { x: 0,  y: 1 },  // Down
-    3: { x: -1, y: 0 }   // Left
+    0: { x: -1, y: 0 },  // 0: 向上 (行数 x 减少)
+    1: { x: 0,  y: 1 },  // 1: 向右 (列数 y 增加)
+    2: { x: 1,  y: 0 },  // 2: 向下 (行数 x 增加)
+    3: { x: 0,  y: -1 }  // 3: 向左 (列数 y 减少)
   };
 
   return map[direction];
