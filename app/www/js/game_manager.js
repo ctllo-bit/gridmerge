@@ -4,7 +4,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   // this.storageManager = new StorageManager;
   this.actuator       = new Actuator;
 
-  // this.startTiles     = 2;
+  this.startTiles     = 2;
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
@@ -52,12 +52,47 @@ GameManager.prototype.setup = function () {
   //   this.keepPlaying = false;
 
   //   // Add the initial tiles
-  //   this.addStartTiles();
+  this.addStartTiles();
   // }
 
   // Update the actuator
   this.actuate();
 };
+
+
+// Set up the initial tiles to start the game with
+GameManager.prototype.addStartTiles = function () {
+  for (var i = 0; i < this.startTiles; i++) {
+    this.addRandomTile();
+  }
+};
+
+// Adds a tile in a random position
+GameManager.prototype.addRandomTile = function () {
+  if (this.grid.cellsAvailable()) {
+    var value = Math.random() < 0.9 ? 2 : 4;
+    var tile = new Tile(this.grid.randomAvailableCell(), value);
+
+    this.grid.insertTile(tile);
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Sends the updated grid to the actuator
 GameManager.prototype.actuate = function () {

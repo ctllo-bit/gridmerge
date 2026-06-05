@@ -17,11 +17,9 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
     // 2. 遍历网格里的每一个方块实体
     grid.cells.forEach(function (column) {
       column.forEach(function (cell) {
-        console.log(cell);
-    //     if (cell) {
-    //       console.log("666666666666666666666666666666");
-    //       self.addTile(cell);
-    //     }
+        if(cell){
+          self.addTile(cell);
+        }
       });
     });
 
@@ -36,6 +34,7 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
   //       self.message(true); // You win!
   //     }
   //   }
+
 
   });
 };
@@ -52,6 +51,8 @@ HTMLActuator.prototype.clearContainer = function (container) {
 };
 
 HTMLActuator.prototype.addTile = function (tile) {
+  console.log('ffffffffffffffffffffffffffff');
+
   var wrapper = document.createElement("div");
   var inner   = document.createElement("div");
 

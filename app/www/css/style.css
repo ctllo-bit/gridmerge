@@ -138,27 +138,73 @@ body {
   font-weight: bold;
 }
 
+
+/* 1. 调整方块容器，让它精确覆盖在网格内部（扣除外围 10px 的 padding） */
 .tile-container {
-  position: absolute; /* 绝对定位，覆盖在底框之上 */
+  position: absolute;
   z-index: 2;
-  top: 0; left: 0;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  pointer-events: none; /* 防止挡住鼠标或手势事件 */
 }
 
-
+/* 2. 动态方块的外壳：只负责控制绝对定位、大小以及滑动的 Transition */
 .tile {
   position: absolute;
-  /* 这是滑动的关键！任何位置变化，都会在 100 毫秒内平滑过渡 */
+  width: calc((100% - 30px) / 4);  /* (100%总宽 - 3个10px间距) / 4 */
+  height: calc((100% - 30px) / 4);
   transition: 100ms ease-in-out;
   transition-property: transform;
 }
 
 
-/* 预先写好 16 个位置的坐标类名 (假设格子大小+间距是 120px) */
-.tile-position-0-0 { transform: translate(0px, 0px); }
-.tile-position-0-1 { transform: translate(120px, 0px); }
-.tile-position-0-2 { transform: translate(240px, 0px); }
-/* ... 你需要把 4x4 的 16 个位置都写出来 ... */
+/* 3. 方块的内心：负责承载数字、居中、背景色和出现/合并动画 */
+.tile .tile-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(16px, 11cqw, 45px);
+  font-weight: bold;
+}
 
+/* 4. 响应式坐标矩阵（核心：100% 自身宽 + 10px 间距） */
+/* 第一行 (y = 0) */
+.tile-position-0-0 { transform: translate(calc(0 * (100% + 10px)), calc(0 * (100% + 10px))); }
+.tile-position-0-1 { transform: translate(calc(1 * (100% + 10px)), calc(0 * (100% + 10px))); }
+.tile-position-0-2 { transform: translate(calc(2 * (100% + 10px)), calc(0 * (100% + 10px))); }
+.tile-position-0-3 { transform: translate(calc(3 * (100% + 10px)), calc(0 * (100% + 10px))); }
+/* 第二行 (y = 1) */
+.tile-position-1-0 { transform: translate(calc(0 * (100% + 10px)), calc(1 * (100% + 10px))); }
+.tile-position-1-1 { transform: translate(calc(1 * (100% + 10px)), calc(1 * (100% + 10px))); }
+.tile-position-1-2 { transform: translate(calc(2 * (100% + 10px)), calc(1 * (100% + 10px))); }
+.tile-position-1-3 { transform: translate(calc(3 * (100% + 10px)), calc(1 * (100% + 10px))); }
+/* 第三行 (y = 2) */
+.tile-position-2-0 { transform: translate(calc(0 * (100% + 10px)), calc(2 * (100% + 10px))); }
+.tile-position-2-1 { transform: translate(calc(1 * (100% + 10px)), calc(2 * (100% + 10px))); }
+.tile-position-2-2 { transform: translate(calc(2 * (100% + 10px)), calc(2 * (100% + 10px))); }
+.tile-position-2-3 { transform: translate(calc(3 * (100% + 10px)), calc(2 * (100% + 10px))); }
+/* 第四行 (y = 3) */
+.tile-position-3-0 { transform: translate(calc(0 * (100% + 10px)), calc(3 * (100% + 10px))); }
+.tile-position-3-1 { transform: translate(calc(1 * (100% + 10px)), calc(3 * (100% + 10px))); }
+.tile-position-3-2 { transform: translate(calc(2 * (100% + 10px)), calc(3 * (100% + 10px))); }
+.tile-position-3-3 { transform: translate(calc(3 * (100% + 10px)), calc(3 * (100% + 10px))); }
+
+/* 5. 修正颜色样式的绑定：把背景色挂到 tile-inner 上 */
+
+
+/* 5. 修正颜色样式的绑定：把背景色挂到 tile-inner 上 */
+.tile-2 .tile-inner { background-color: #efe4da; color: #776e65; }
+.tile-4 .tile-inner { background-color: #eee0c8; color: #776e65; }
+.tile-8 .tile-inner { background-color: #f2b179; color: white; }
+.tile-16 .tile-inner { background-color: #f59563; color: white; }
+.tile-32 .tile-inner { background-color: #f67c5f; color: white; }
+.tile-64 .tile-inner { background-color: #f65e3b; color: white; }
+.tile-128 .tile-inner { background-color: #edce71; color: white; }
 
 
 /* 新生成的方块放大动画 */
