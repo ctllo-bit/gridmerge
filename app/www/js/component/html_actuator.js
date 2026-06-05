@@ -36,95 +36,55 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
   });
 };
 
-
 HTMLActuator.prototype.clearContainer = function (container) {
   while (container.firstChild) {
     container.removeChild(container.firstChild);
   }
 };
 
-// 核心方法：动态构建方块 DOM 并插入页面
+// 核心方法：动态构建方块 DOM 并插入页面 (支持丝滑滑动与合并动画)
 HTMLActuator.prototype.addTile = function (tile) {
-  console.log('ffffffffffffffffffffffffffff');
+  const wrapper = document.createElement("div"); // 外层管位移 (transform: translate)
+  const inner   = document.createElement("div"); // 内层管缩放 (transform: scale)
 
-  var wrapper = document.createElement("div");//外层（wrapper） 只用来管一件事：移动（transform: translate）。
-  var inner   = document.createElement("div");//内层（inner） 只用来管一件事：缩放（transform: scale）。
+  // 1. 确定初始渲染位置 (为了让滑行动画生效，必须先渲染在旧位置)
+  const position = tile.previousPosition || { x: tile.x, y: tile.y };
+  let positionClass = `tile-position-${position.x}-${position.y}`;
 
-  // 将方块的当前坐标转换为 CSS 类名（触发移动动画的关键）
-  var positionClass = "tile-position-" + tile.x + "-" + tile.y;
-
-  // 基本样式
-  var classes = ["tile", "tile-" + tile.value, positionClass];
-
-  // 如果它是一个新生成的方块，加上出现动画类名
-  if (tile.previousPosition === null && !tile.mergedFrom) {
-    classes.push("tile-new");
-  } 
-  // 如果是合并出来的，加上弹跳动画类名
-  else if (tile.mergedFrom) {
-    classes.push("tile-merged");
+  // 2. 组装基础类名
+  const classes = ["tile", `tile-${tile.value}`, positionClass];
+  if (tile.value > 2048) {
+    classes.push("tile-super");
   }
 
-  // 拼接类名并渲染到屏幕上
-  wrapper.className = classes.join(" ");
+  // 3. 核心动画状态机
+  if (tile.previousPosition) {
+    // 【滑行分支】：先以旧位置渲染，然后在下一帧立即变成新位置，从而触发 CSS 过渡滑行动画
+    wrapper.className = classes.join(" ");
+    window.requestAnimationFrame(() => {
+      // 优雅替代：通过替换数组元素直接更新位置类名
+      classes[2] = `tile-position-${tile.x}-${tile.y}`;
+      wrapper.className = classes.join(" "); 
+    });
+  } else if (tile.mergedFrom) {
+    // 【合并分支】：加上弹跳动画类，并递归渲染那两个向中间靠拢并消失的旧方块
+    classes.push("tile-merged");
+    wrapper.className = classes.join(" ");
+    
+    // 使用箭头函数，完美抛弃了老的 var self = this;
+    tile.mergedFrom.forEach(merged => this.addTile(merged));
+  } else {
+    // 【新生分支】：新生成的方块，触发渐显和放大动画
+    classes.push("tile-new");
+    wrapper.className = classes.join(" ");
+  }
+
+  // 4. 组装并渲染 DOM
   inner.className = "tile-inner";
-  inner.innerText = tile.value;
+  inner.textContent = tile.value; // 用 textContent 代替 innerText，性能更好且避免回流
 
   wrapper.appendChild(inner);
   this.tileContainer.appendChild(wrapper);
-};
-
-
-
-// HTMLActuator.prototype.addTile = function (tile) {
-
-//   console.log("wwwwffffffffffffff");
-
-//   var self = this;
-
-//   var wrapper   = document.createElement("div");
-//   var inner     = document.createElement("div");
-//   var position  = tile.previousPosition || { x: tile.x, y: tile.y };
-//   var positionClass = this.positionClass(position);
-
-//   // We can't use classlist because it somehow glitches when replacing classes
-//   var classes = ["tile", "tile-" + tile.value, positionClass];
-
-//   if (tile.value > 2048) classes.push("tile-super");
-
-//   this.applyClasses(wrapper, classes);
-
-//   inner.classList.add("tile-inner");
-//   inner.textContent = tile.value;
-
-//   if (tile.previousPosition) {
-//     // Make sure that the tile gets rendered in the previous position first
-//     window.requestAnimationFrame(function () {
-//       classes[2] = self.positionClass({ x: tile.x, y: tile.y });
-//       self.applyClasses(wrapper, classes); // Update the position
-//     });
-//   } else if (tile.mergedFrom) {
-//     classes.push("tile-merged");
-//     this.applyClasses(wrapper, classes);
-
-//     // Render the tiles that merged
-//     tile.mergedFrom.forEach(function (merged) {
-//       self.addTile(merged);
-//     });
-//   } else {
-//     classes.push("tile-new");
-//     this.applyClasses(wrapper, classes);
-//   }
-
-//   // Add the inner part of the tile to the wrapper
-//   wrapper.appendChild(inner);
-
-//   // Put the tile on the board
-//   this.tileContainer.appendChild(wrapper);
-// };
-
-HTMLActuator.prototype.applyClasses = function (element, classes) {
-  element.setAttribute("class", classes.join(" "));
 };
 
 HTMLActuator.prototype.normalizePosition = function (position) {
@@ -161,3 +121,4 @@ HTMLActuator.prototype.updateBestScore = function (bestScore) {
 HTMLActuator.prototype.continueGame = function () {
   this.gameOverOverlay.style.display = "none"; 
 };
+
