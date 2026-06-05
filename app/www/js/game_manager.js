@@ -16,10 +16,13 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
 // Restart the game
 GameManager.prototype.restart = function () {
   // this.storageManager.clearGameState();
-  // this.actuator.continueGame(); // Clear the game won/lost message
-  // this.setup();
+  this.actuator.clearMessage();
+  this.setup();
+};
 
-  console.log("sfdsffffffffffffffffff");
+// Return true if the game is lost, or has won and the user hasn't kept playing
+GameManager.prototype.isGameTerminated = function () {
+  return this.over;
 };
 
 
@@ -46,7 +49,7 @@ GameManager.prototype.setup = function () {
   // } else {
   this.grid        = new Grid(this.size);
   this.score       = 0;
-  //   this.over        = false;
+  this.over        = false;
   //   this.won         = false;
   //   this.keepPlaying = false;
 
@@ -95,7 +98,7 @@ GameManager.prototype.actuate = function () {
     score:      this.score,
     over:       false,
     bestScore:  1024,
-    terminated: false
+    terminated: this.isGameTerminated()
   });
 
   // 自己不碰 DOM，全权交给 actuator 处理
@@ -118,7 +121,7 @@ GameManager.prototype.move = function (direction) {
   // 0: up, 1: right, 2: down, 3: left
   var self = this;
 
-  // if (this.isGameTerminated()) return; // Don't do anything if the game's over
+  if (this.isGameTerminated()) return; // Don't do anything if the game's over
 
   let cell, tile;
 
@@ -167,6 +170,7 @@ GameManager.prototype.move = function (direction) {
     this.addRandomTile();
 
     if (!this.movesAvailable()) {
+      
       this.over = true; // Game over!
     }
 

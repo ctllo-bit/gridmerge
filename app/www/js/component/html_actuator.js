@@ -2,14 +2,14 @@ function HTMLActuator() {
   this.tileContainer = document.querySelector(".tile-container");
   this.scoreValue    = document.querySelector(".score-value");
   this.bestValue     = document.querySelector(".best-value");
-  this.gameOverOverlay = document.getElementById("gameOverOverlay");
+  this.gameOverOverlay = document.querySelector(".game-over");
 
   this.score = 0;
 }
 
 // 核心渲染主网关：GameManager 每次算完棋盘都会调用它
 HTMLActuator.prototype.actuate = function (grid, metadata) {
-  var self = this;
+  let self = this;
 
   // 使用 requestAnimationFrame 确保在浏览器最佳绘制时机渲染，防止动画卡顿
   window.requestAnimationFrame(function () {
@@ -31,9 +31,7 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
 
     // 4. 判断并处理游戏结束状态
     if (metadata.terminated) {
-      if (metadata.over) {
-        self.gameOverOverlay.style.display = "flex"; // 显示游戏结束
-      }
+      self.gameOverOverlay.style.display = "flex"; // 显示游戏结束
     }
 
 // 3. 更新分数等 UI
@@ -92,10 +90,7 @@ HTMLActuator.prototype.addTile = function (tile) {
   this.tileContainer.appendChild(wrapper);
 };
 
-// 辅助方法：清除可能存在的上一局输赢状态画面
-HTMLActuator.prototype.continueGame = function () {
-  this.gameOverOverlay.style.display = "none";
-};
+
 
 // HTMLActuator.prototype.addTile = function (tile) {
 
@@ -179,15 +174,17 @@ HTMLActuator.prototype.updateBestScore = function (bestScore) {
 };
 
 HTMLActuator.prototype.message = function (won) {
-  var type    = won ? "game-won" : "game-over";
-  var message = won ? "You win!" : "Game over!";
+  // var type    = won ? "game-won" : "game-over";
+  // var message = won ? "You win!" : "Game over!";
 
-  this.messageContainer.classList.add(type);
-  this.messageContainer.getElementsByTagName("p")[0].textContent = message;
+  // this.messageContainer.classList.add(type);
+  // this.messageContainer.getElementsByTagName("p")[0].textContent = message;
 };
 
 HTMLActuator.prototype.clearMessage = function () {
-  // IE only takes one value to remove at a time.
-  this.messageContainer.classList.remove("game-won");
-  this.messageContainer.classList.remove("game-over");
+  this.gameOverOverlay.style.display = "none"; 
+
+  // // IE only takes one value to remove at a time.
+  // this.messageContainer.classList.remove("game-won");
+  // this.messageContainer.classList.remove("game-over");
 };
