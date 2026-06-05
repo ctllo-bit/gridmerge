@@ -18,10 +18,6 @@ class GameManager {
     this.setup();
   }
 
-  isGameTerminated() {
-    return this.over;
-  }
-
   setup() {
     const previousState = this.storageManager.getGameState();
 
@@ -65,9 +61,8 @@ class GameManager {
 
     this.actuator.actuate(this.grid, {
       score:      this.score,
-      over:       this.over,
       bestScore:  this.storageManager.getBestScore(),
-      terminated: this.isGameTerminated()
+      terminated: this.over
     });
   }
 
@@ -127,7 +122,7 @@ class GameManager {
   }
 
   move(direction) {
-    if (this.isGameTerminated()) return;
+    if (this.over) return;
 
     const vector     = this.getVector(direction);
     const traversals = this.buildTraversals(vector);

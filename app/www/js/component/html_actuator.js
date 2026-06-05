@@ -13,10 +13,10 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
 
   // 使用 requestAnimationFrame 确保在浏览器最佳绘制时机渲染，防止动画卡顿
   window.requestAnimationFrame(function () {
-    // 1. 清空上一帧留下的所有旧方块 DOM
+    // 清空上一帧留下的所有旧方块 DOM
     self.clearContainer(self.tileContainer);
 
-    // 2. 重新遍历二维网格，发现哪里有方块实体，就画到页面上
+    // 重新遍历二维网格，发现哪里有方块实体，就画到页面上
     grid.cells.forEach(function (column) {
       column.forEach(function (cell) {
         if(cell){
@@ -25,30 +25,14 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
       });
     });
 
-    // // 3. 刷新分数板
+    // 刷新分数板
     self.scoreValue.innerText = metadata.score;
     self.bestValue.innerText  = metadata.bestScore;
 
-    // 4. 判断并处理游戏结束状态
+    // 判断并处理游戏结束状态
     if (metadata.terminated) {
       self.gameOverOverlay.style.display = "flex"; // 显示游戏结束
     }
-
-// 3. 更新分数等 UI
- // self.updateScore(metadata.score);
-
-
-  //   self.updateBestScore(metadata.bestScore);
-
-  //   if (metadata.terminated) {
-  //     if (metadata.over) {
-  //       self.message(false); // You lose
-  //     } else if (metadata.won) {
-  //       self.message(true); // You win!
-  //     }
-  // }
-
-
   });
 };
 
