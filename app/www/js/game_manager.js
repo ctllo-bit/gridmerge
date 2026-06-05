@@ -93,6 +93,68 @@ GameManager.prototype.serialize = function () {
     over:        this.over
   };
 };
+
+// Save all tile positions and remove merger info
+GameManager.prototype.prepareTiles = function () {
+  this.grid.eachCell(function (x, y, tile) {
+    if (tile) {
+      tile.mergedFrom = null;
+      tile.savePosition();
+    }
+  });
+};
+
+// Move a tile and its representation
+GameManager.prototype.moveTile = function (tile, cell) {
+  this.grid.cells[tile.x][tile.y] = null;
+  this.grid.cells[cell.x][cell.y] = tile;
+  tile.updatePosition(cell);
+};
+
+// 获取代表所选方向的向量（已根据你的矩阵渲染逻辑进行了转置修正）
+GameManager.prototype.getVector = function (direction) {
+  let map = {
+    0: { x: -1, y: 0 },  // 0: 向上 (行数 x 减少)
+    1: { x: 0,  y: 1 },  // 1: 向右 (列数 y 增加)
+    2: { x: 1,  y: 0 },  // 2: 向下 (行数 x 增加)
+    3: { x: 0,  y: -1 }  // 3: 向左 (列数 y 减少)
+  };
+
+  return map[direction];
+};
+
+// Build a list of positions to traverse in the right order
+GameManager.prototype.buildTraversals = function (vector) {
+  let traversals = { x: [], y: [] };
+
+  for (let pos = 0; pos < this.size; pos++) {
+    traversals.x.push(pos);
+    traversals.y.push(pos);
+  }
+
+  // Always traverse from the farthest cell in the chosen direction
+  if (vector.x === 1) traversals.x = traversals.x.reverse();
+  if (vector.y === 1) traversals.y = traversals.y.reverse();
+
+  return traversals;
+};
+
+GameManager.prototype.findFarthestPosition = function (cell, vector) {
+  let previous;
+
+  // Progress towards the vector direction until an obstacle is found
+  do {
+    previous = cell;
+    cell     = { x: previous.x + vector.x, y: previous.y + vector.y };
+  } while (this.grid.withinBounds(cell) &&
+           this.grid.cellAvailable(cell));
+
+  return {
+    farthest: previous,
+    next: cell // Used to check if a merge is required
+  };
+};
+
   // 1. 遍历并记录所有方块的当前位置 (tile.savePosition())
   // 2. 根据你的滑动逻辑，计算新的二维数组（注意：合并时生成新的 Tile 对象）
   // 3. 更新每个方块的新坐标 (tile.updatePosition(newCell))
@@ -102,7 +164,7 @@ GameManager.prototype.serialize = function () {
 // Move tiles on the grid in the specified direction
 GameManager.prototype.move = function (direction) {
   // 0: up, 1: right, 2: down, 3: left
-  var self = this;
+  let self = this;
 
   if (this.isGameTerminated()) return; // Don't do anything if the game's over
 
@@ -122,12 +184,12 @@ GameManager.prototype.move = function (direction) {
       tile = self.grid.cellContent(cell);
 
       if (tile) {
-        var positions = self.findFarthestPosition(cell, vector);
-        var next      = self.grid.cellContent(positions.next);
+        let positions = self.findFarthestPosition(cell, vector);
+        let next      = self.grid.cellContent(positions.next);
 
         // Only one merger per row traversal?
         if (next && next.value === tile.value && !next.mergedFrom) {
-          var merged = new Tile(positions.next, tile.value * 2);
+          let merged = new Tile(positions.next, tile.value * 2);
           merged.mergedFrom = [tile, next];
 
           self.grid.insertTile(merged);
@@ -153,76 +215,11 @@ GameManager.prototype.move = function (direction) {
     this.addRandomTile();
 
     if (!this.movesAvailable()) {
-      
       this.over = true; // Game over!
     }
 
     this.actuate();
   }
-};
-
-// Move a tile and its representation
-GameManager.prototype.moveTile = function (tile, cell) {
-  this.grid.cells[tile.x][tile.y] = null;
-  this.grid.cells[cell.x][cell.y] = tile;
-  tile.updatePosition(cell);
-};
-
-
-// 获取代表所选方向的向量（已根据你的矩阵渲染逻辑进行了转置修正）
-GameManager.prototype.getVector = function (direction) {
-  var map = {
-    0: { x: -1, y: 0 },  // 0: 向上 (行数 x 减少)
-    1: { x: 0,  y: 1 },  // 1: 向右 (列数 y 增加)
-    2: { x: 1,  y: 0 },  // 2: 向下 (行数 x 增加)
-    3: { x: 0,  y: -1 }  // 3: 向左 (列数 y 减少)
-  };
-
-  return map[direction];
-};
-
-
-// Build a list of positions to traverse in the right order
-GameManager.prototype.buildTraversals = function (vector) {
-  var traversals = { x: [], y: [] };
-
-  for (var pos = 0; pos < this.size; pos++) {
-    traversals.x.push(pos);
-    traversals.y.push(pos);
-  }
-
-  // Always traverse from the farthest cell in the chosen direction
-  if (vector.x === 1) traversals.x = traversals.x.reverse();
-  if (vector.y === 1) traversals.y = traversals.y.reverse();
-
-  return traversals;
-};
-
-// Save all tile positions and remove merger info
-GameManager.prototype.prepareTiles = function () {
-  this.grid.eachCell(function (x, y, tile) {
-    if (tile) {
-      tile.mergedFrom = null;
-      tile.savePosition();
-    }
-  });
-};
-
-
-GameManager.prototype.findFarthestPosition = function (cell, vector) {
-  var previous;
-
-  // Progress towards the vector direction until an obstacle is found
-  do {
-    previous = cell;
-    cell     = { x: previous.x + vector.x, y: previous.y + vector.y };
-  } while (this.grid.withinBounds(cell) &&
-           this.grid.cellAvailable(cell));
-
-  return {
-    farthest: previous,
-    next: cell // Used to check if a merge is required
-  };
 };
 
 
