@@ -19,13 +19,13 @@ Grid.prototype.empty = function () {
 };
 
 Grid.prototype.fromState = function (state) {
-  var cells = [];
+  let cells = [];
 
-  for (var x = 0; x < this.size; x++) {
-    var row = cells[x] = [];
+  for (let x = 0; x < this.size; x++) {
+    let row = cells[x] = [];
 
-    for (var y = 0; y < this.size; y++) {
-      var tile = state[x][y];
+    for (let y = 0; y < this.size; y++) {
+      let tile = state[x][y];
       row.push(tile ? new Tile(tile.position, tile.value) : null);
     }
   }
