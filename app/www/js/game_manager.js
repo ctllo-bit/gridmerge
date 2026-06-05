@@ -6,7 +6,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
 
   // this.startTiles     = 2;
 
-  // this.inputManager.on("move", this.move.bind(this));
+  this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
   // this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
 
@@ -23,3 +23,17 @@ GameManager.prototype.restart = function () {
 
   console.log("sfdsffffffffffffffffff");
 };
+
+
+
+
+
+
+
+// Move tiles on the grid in the specified direction
+GameManager.prototype.move = function (direction) {
+
+  console.log("Move");
+
+};
+
