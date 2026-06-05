@@ -1,5 +1,5 @@
 function GameManager(size, InputManager, Actuator, StorageManager) {
-  // this.size           = size; // Size of the grid
+  this.size           = size; // Size of the grid
   // this.inputManager   = new InputManager;
   // this.storageManager = new StorageManager;
   // this.actuator       = new Actuator;
@@ -11,7 +11,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   // this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
 
   // this.setup();
-  console.log("sfdsddddddddddddddddddddddddddddddd");
+  console.log("sfdsddddddddddddssssssssss111111111ddddddddddddddddddd");
 }
 
 // Restart the game
