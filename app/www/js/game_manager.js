@@ -155,12 +155,6 @@ GameManager.prototype.findFarthestPosition = function (cell, vector) {
   };
 };
 
-  // 1. 遍历并记录所有方块的当前位置 (tile.savePosition())
-  // 2. 根据你的滑动逻辑，计算新的二维数组（注意：合并时生成新的 Tile 对象）
-  // 3. 更新每个方块的新坐标 (tile.updatePosition(newCell))
-  // 4. 计算完毕后，呼叫渲染器，把数据丢给它去画图
-
-
 // Move tiles on the grid in the specified direction
 GameManager.prototype.move = function (direction) {
   // 0: up, 1: right, 2: down, 3: left
@@ -222,23 +216,26 @@ GameManager.prototype.move = function (direction) {
   }
 };
 
+GameManager.prototype.movesAvailable = function () {
+  return this.grid.cellsAvailable() || this.tileMatchesAvailable();
+};
 
 // Check for available matches between tiles (more expensive check)
 GameManager.prototype.tileMatchesAvailable = function () {
-  var self = this;
+  let self = this;
 
-  var tile;
+  let tile;
 
-  for (var x = 0; x < this.size; x++) {
-    for (var y = 0; y < this.size; y++) {
+  for (let x = 0; x < this.size; x++) {
+    for (let y = 0; y < this.size; y++) {
       tile = this.grid.cellContent({ x: x, y: y });
 
       if (tile) {
-        for (var direction = 0; direction < 4; direction++) {
-          var vector = self.getVector(direction);
-          var cell   = { x: x + vector.x, y: y + vector.y };
+        for (let direction = 0; direction < 4; direction++) {
+          let vector = self.getVector(direction);
+          let cell   = { x: x + vector.x, y: y + vector.y };
 
-          var other  = self.grid.cellContent(cell);
+          let other  = self.grid.cellContent(cell);
 
           if (other && other.value === tile.value) {
             return true; // These two tiles can be merged
@@ -249,11 +246,6 @@ GameManager.prototype.tileMatchesAvailable = function () {
   }
 
   return false;
-};
-
-
-GameManager.prototype.movesAvailable = function () {
-  return this.grid.cellsAvailable() || this.tileMatchesAvailable();
 };
 
 GameManager.prototype.positionsEqual = function (first, second) {
