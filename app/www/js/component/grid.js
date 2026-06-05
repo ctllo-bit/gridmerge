@@ -35,7 +35,7 @@ Grid.prototype.fromState = function (state) {
 
 // Find the first available random position
 Grid.prototype.randomAvailableCell = function () {
-  var cells = this.availableCells();
+  let cells = this.availableCells();
 
   if (cells.length) {
     return cells[Math.floor(Math.random() * cells.length)];
@@ -43,7 +43,7 @@ Grid.prototype.randomAvailableCell = function () {
 };
 
 Grid.prototype.availableCells = function () {
-  var cells = [];
+  let cells = [];
 
   this.eachCell(function (x, y, tile) {
     if (!tile) {
@@ -56,8 +56,8 @@ Grid.prototype.availableCells = function () {
 
 // Call callback for every cell
 Grid.prototype.eachCell = function (callback) {
-  for (var x = 0; x < this.size; x++) {
-    for (var y = 0; y < this.size; y++) {
+  for (let x = 0; x < this.size; x++) {
+    for (let y = 0; y < this.size; y++) {
       callback(x, y, this.cells[x][y]);
     }
   }
@@ -100,12 +100,12 @@ Grid.prototype.withinBounds = function (position) {
 };
 
 Grid.prototype.serialize = function () {
-  var cellState = [];
+  let cellState = [];
 
-  for (var x = 0; x < this.size; x++) {
-    var row = cellState[x] = [];
+  for (let x = 0; x < this.size; x++) {
+    let row = cellState[x] = [];
 
-    for (var y = 0; y < this.size; y++) {
+    for (let y = 0; y < this.size; y++) {
       row.push(this.cells[x][y] ? this.cells[x][y].serialize() : null);
     }
   }
