@@ -1,35 +1,28 @@
 @import url(fonts/clear-sans.css);
 
-:root {
-  --page-bg: #f2ede5;
-  --text-color: #5f5a54;
-  --board-bg: #c0ab96;
-  --board-shadow: rgba(53, 43, 35, 0.16);
-  --cell-bg: rgba(255, 255, 255, 0.2);
-  --score-bg: rgba(64, 54, 47, 0.92);
-  --grid-size: 4;
-  --radius: 8px;
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-  background: var(--page-bg);
-  color: var(--text-color);
-  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
-  font-size: 18px; 
+html,body{
+    margin: 0;
+    padding: 0;
 }
 
 body {
-  margin: 25px 0; 
+    background-color: #faf8ef; /* 2048 经典的米黄色背景 */
+    font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+    color: #776e65;
+    text-align: center;
+
+    display: flex;
+    min-height: 100vh;
+    justify-content: center;
+    margin: auto 0; 
 }
 
 .game-container {
-    /* 还原经典原版 500px 饱满尺寸 */
-    width: min(100% - 24px, 500px); 
+    /* 保持原样：限制最大宽度和两侧间距 */
+    width: min(100% - 24px, 500px);
+    display: flex;
+    flex-direction: column;
     margin: 0 auto; 
-    padding: clamp(16px, 4vh, 28px) 0 clamp(18px, 4vh, 28px);
-    box-sizing: border-box;
 }
 
 /* --- 顶部：Logo 与 分数板 --- */
@@ -37,56 +30,66 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 15px;
 }
 
+
 .logo {
-  font-size: clamp(40px, 11vw, 78px);
+  font-size: clamp(32px, 8vw, 53px);
   font-weight: bold;
-  margin: 0;
-  padding: 6px 24px 6px 0px;
+  background-color: #ecc46b;
+  color: white;
+  padding: 10px 30px;
   border-radius: 6px;
   line-height: 1;
 }
 
 .scores {
   display: flex;
-  gap: 8px;
+  gap: 10px;
 }
 
 .score-box {
-  background-color: var(--score-bg);
-  color: #eee4da;
-  padding: 6px 15px;
+  background-color: #3b3a35;
+  color: white;
+  padding: 6px 12px;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 55px;
+  min-width: 60px;
 }
 
-.score-value {
-  font-size: 22px;
+.score-title {
+  font-size: 13px;
   font-weight: bold;
-  color: white;
+  color: #eee4da;
 }
 
-.best-value {
-  font-size: 22px;
+.best-value  {
+  font-size: 18px;
   font-weight: bold;
-  color: white;
+  margin-top: -2px;
 }
+
+.score-value  {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: -2px;
+}
+
 
 /* --- 中部：文字说明与按钮 --- */
 .controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 8px;
 }
 
 .desc {
   font-size: 16px;
-  text-align: left;
-  line-height: 1.4;
+  max-width: 200px;
 }
 
 .buttons {
@@ -95,11 +98,11 @@ body {
 }
 
 .btn {
-  background-color: #8f7a66; /* 修正：原版“新游戏”按钮其实是低调的深褐色 */
-  color: #f9f7f4;
+  background-color: #f75e4f;
+  color: white;
   border: none;
   border-radius: 4px;
-  padding: 10px 18px;
+  padding: 12px 18px;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
@@ -107,34 +110,49 @@ body {
 
 /* --- 底部：4x4 游戏棋盘 --- */
 .grid-container {
-  width: 100%;
+  /* 1. 基础宽度拉满 container */
+  width: min(100% - 24px, 500px);
+  /* 2. 核心魔法：限制最大宽度不能超过视口高度减去顶部标题栏的高度 */
+  /* 这里的 180px 是预估的 <header> 和 <section class="above-game"> 的总高度，你可以根据实际情况微调 */
+  max-width: calc(100vh - 200px); 
+  /* 保持正方形比例 */
   aspect-ratio: 1 / 1; 
-  box-sizing: border-box;
 
-  margin: 30px auto 0 auto; /* 舒适的棋盘上方间距 */
+  /* 如果受限于 max-width 导致棋盘变窄，保证它在容器中居中 */
+  margin: 0 auto; 
 
   background-color: #a4968b;
   box-shadow:
     0 18px 36px var(--board-shadow),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   padding: 12px;
-  border-radius: 6px;
+  border-radius: 8px;
   
+  /* CSS Grid 是画棋盘的最优解 */
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
   gap: 12px;
 
-  position: relative; 
+  position: relative; /* 增加这行，让遮罩层相对于棋盘定位 */
 }
 
 .grid-cell {
-  border-radius: var(--radius);
-  background: var(--cell-bg);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  background-color: #cdc1b4;
+  border-radius: 8px;
+  
+  /* 使用 Flexbox 让数字完美居中 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* 45px 左右是极限大，但在小屏幕下它会随着棋盘变小而变小（约为棋盘宽度的 11%） */
+  font-size: clamp(16px, 11cqw, 45px);
+  font-weight: bold;
 }
 
-/* 动态方块的绝对定位容器 */
+
+/* 1. 调整方块容器，让它精确覆盖在网格内部（扣除外围 10px 的 padding） */
 .tile-container {
   position: absolute;
   z-index: 2;
@@ -145,6 +163,8 @@ body {
   pointer-events: none; 
 }
 
+/* 2. 动态方块的外壳：只负责控制绝对定位、大小以及滑动的 Transition */
+/* 确保这段代码在你的 CSS 中保持不变，这是滑动的灵魂 */
 .tile {
   position: absolute;
   width: calc((100% - 36px) / 4);
@@ -153,6 +173,8 @@ body {
   transition-property: transform;
 }
 
+
+/* 3. 方块的内心：负责承载数字、居中、背景色和出现/合并动画 */
 .tile .tile-inner {
   width: 100%;
   height: 100%;
@@ -161,7 +183,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: clamp(20px, 11cqw, 48px);
+  font-size: clamp(16px, 11cqw, 45px);
   font-weight: bold;
 }
 
@@ -208,33 +230,42 @@ body {
   100% { opacity: 1; transform: scale(1); }
 }
 
+/* 新生成的方块放大动画 */
 .tile-new .tile-inner {
+  /* 200ms 持续时间，ease 缓动，100ms 延迟 */
   animation: appear 200ms ease 100ms;
   animation-fill-mode: backwards;
 }
 
 @keyframes pop {
-  0% { transform: scale(0); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* 合并时的弹跳动画 */
 .tile-merged .tile-inner {
-  z-index: 20; 
+  z-index: 20; /* 提升 z-index 确保弹跳放大时盖过相邻的方块 */
   animation: pop 200ms ease 100ms;
   animation-fill-mode: backwards;
 }
 
-/* 游戏结束遮罩层 */
+
+/* --- 新增：游戏结束遮罩层 --- */
 .game-over {
   position: absolute;
   top: 0; 
   left: 0; 
   width: 100%; 
   height: 100%;
-  background: rgba(238, 228, 218, 0.73); 
-  display: none; 
+  background: rgba(238, 228, 218, 0.75); /* 半透明背景 */
+  display: none; /* 默认隐藏，JS 触发时改为 flex */
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -243,8 +274,10 @@ body {
 }
 
 .game-over h2 {
-  font-size: 60px;
+  font-size: 40px;
   font-weight: bold;
   color: #776e65;
-  margin: 0 0 20px 0;
+  margin-top: 0;
+  margin-bottom: 20px;
 }
+
