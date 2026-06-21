@@ -5,7 +5,7 @@ class GameManager {
     this.storageManager = new StorageManager();
     this.actuator       = new Actuator();
     this.soundEnabled   = false;
-    this.masterVolume   = (navigator.maxTouchPoints > 0 || 'ontouchstart' in window) ? 9 : 1;
+    this.masterVolume   = navigator.maxTouchPoints > 0 ? 9 : 1;
     this.audioContext   = null;
     this.startTiles     = 2;
 
@@ -215,6 +215,9 @@ toggleSound() {
     if (!this.soundEnabled) return null;
     if (!this.audioContext) {
       this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (this.audioContext.state === "suspended") {
+      this.audioContext.resume();
     }
     return this.audioContext;
   }

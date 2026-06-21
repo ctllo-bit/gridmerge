@@ -88,13 +88,14 @@ body {
 }
 
 .desc {
-  font-size: 16px;
+  font-size: 20px;
   max-width: 200px;
+  margin: 5px 0;
 }
 
 .buttons {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .btn {
@@ -281,3 +282,23 @@ body {
   margin-bottom: 20px;
 }
 
+/* =========================
+   手机适配
+========================= */
+@media (max-width: 600px) {
+  .game-container {
+    width: calc(100% - 16px);
+  }
+
+  .actions {
+    margin: 13px 0;
+    gap: 5px;
+  }
+
+  .btn {
+    padding: 11px 13px;
+    font-size: 12px;
+    border-radius: 5px;
+  }
+
+}
