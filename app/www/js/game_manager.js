@@ -5,6 +5,7 @@ class GameManager {
     this.storageManager = new StorageManager();
     this.actuator       = new Actuator();
     this.soundEnabled   = false;
+    this.masterVolume   = (navigator.maxTouchPoints > 0 || 'ontouchstart' in window) ? 9 : 1;
     this.audioContext   = null;
     this.startTiles     = 2;
 
@@ -169,13 +170,10 @@ class GameManager {
       this.addRandomTile();
       if (!this.movesAvailable()) {
         this.over = true;
+        this.playSound("lose");
       }
 
       this.playSound(points > 0 ? "merge" : "move");
-
-      if (this.over) {
-        this.playSound("lose");
-      }
       this.actuate();
     }
   }
@@ -204,8 +202,7 @@ class GameManager {
     return false;
   }
 
-
-  toggleSound() {
+toggleSound() {
     const button = document.querySelector(".btn-sound");
     this.soundEnabled = !this.soundEnabled;
     button.textContent = this.soundEnabled ? "音效:开" : "音效:关";
@@ -231,7 +228,7 @@ class GameManager {
     oscillator.type = type;
     oscillator.frequency.setValueAtTime(frequency, start);
     volume.gain.setValueAtTime(0.0001, start);
-    volume.gain.exponentialRampToValueAtTime(gain, start + 0.01);
+    volume.gain.exponentialRampToValueAtTime(gain * this.masterVolume, start + 0.01);
     volume.gain.exponentialRampToValueAtTime(0.0001, start + duration);
     oscillator.connect(volume).connect(context.destination);
     oscillator.start(start);

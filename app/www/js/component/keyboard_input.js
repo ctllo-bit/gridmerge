@@ -11,14 +11,16 @@ KeyboardInputManager.prototype.on = function (event, callback) {
 };
 
 KeyboardInputManager.prototype.emit = function (event, data) {
-  let callbacks = this.events[event];
+  const callbacks = this.events[event];
   if (callbacks) {
-    callbacks.forEach(callback => callback(data));
+    callbacks.forEach(function (callback) {
+      callback(data);
+    });
   }
 };
 
 KeyboardInputManager.prototype.listen = function () {
-  let self = this;
+  const self = this;
 
   // 映射按键：0:上, 1:右, 2:下, 3:左
   let map = {
