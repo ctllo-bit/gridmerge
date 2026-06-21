@@ -46,6 +46,7 @@ KeyboardInputManager.prototype.listen = function () {
 
   // 自动绑定 HTML 按钮点击
   this.bindButtonPress(".btn-new", this.restart);
+  this.bindButtonPress(".btn-sound", this.toggleSound);
   this.bindButtonPress(".btn-restart", this.restart);
 
   // 移动端滑动监听
@@ -80,6 +81,10 @@ KeyboardInputManager.prototype.restart = function (event) {
   this.emit("restart");
 };
 
+KeyboardInputManager.prototype.toggleSound = function (event) {
+  event.preventDefault();
+  this.emit("toggleSound");
+};
 
 KeyboardInputManager.prototype.bindButtonPress = function (selector, fn) {
   let button = document.querySelector(selector);

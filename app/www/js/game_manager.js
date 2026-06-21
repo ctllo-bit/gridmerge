@@ -4,10 +4,13 @@ class GameManager {
     this.inputManager   = new InputManager();
     this.storageManager = new StorageManager();
     this.actuator       = new Actuator();
+    this.soundEnabled   = false;
+    this.audioContext   = null;
     this.startTiles     = 2;
 
     this.inputManager.on("move", this.move.bind(this));
     this.inputManager.on("restart", this.restart.bind(this));
+    this.inputManager.on("toggleSound", this.toggleSound.bind(this));
 
     this.setup();
   }
@@ -75,7 +78,7 @@ class GameManager {
   }
 
   prepareTiles() {
-    this.grid.eachCell((x, y, tile) => {
+    this.grid.eachCell(function (x, y, tile) {
       if (tile) {
         tile.mergedFrom = null;
         tile.savePosition();
@@ -127,6 +130,7 @@ class GameManager {
     const vector     = this.getVector(direction);
     const traversals = this.buildTraversals(vector);
     let moved      = false;
+    let points = 0;
 
     this.prepareTiles();
 
@@ -149,6 +153,7 @@ class GameManager {
             tile.updatePosition(nextPos);
 
             this.score += merged.value;
+            points += merged.value;
           } else {
             this.moveTile(tile, farthest);
           }
@@ -165,6 +170,12 @@ class GameManager {
       if (!this.movesAvailable()) {
         this.over = true;
       }
+
+      this.playSound(points > 0 ? "merge" : "move");
+
+      if (this.over) {
+        this.playSound("lose");
+      }
       this.actuate();
     }
   }
@@ -180,11 +191,8 @@ class GameManager {
         const tile = this.grid.cellContent({ x, y });
         if (tile) {
           // 只检查右侧 (x, y+1) 和下方 (x+1, y)
-          const rightCell = { x, y: y + 1 };
-          const downCell  = { x: x + 1, y };
-
-          const rightTile = this.grid.cellContent(rightCell);
-          const downTile  = this.grid.cellContent(downCell);
+          const rightTile = this.grid.cellContent({ x, y: y + 1 });
+          const downTile  = this.grid.cellContent({ x: x + 1, y });
 
           if ((rightTile && rightTile.value === tile.value) || 
               (downTile && downTile.value === tile.value)) {
@@ -195,4 +203,67 @@ class GameManager {
     }
     return false;
   }
+
+
+  toggleSound() {
+    const button = document.querySelector(".btn-sound");
+    this.soundEnabled = !this.soundEnabled;
+    button.textContent = this.soundEnabled ? "音效:开" : "音效:关";
+    if (this.soundEnabled) {
+      this.playSound("move");
+    }
+  }
+
+  ensureAudio() {
+    if (!this.soundEnabled) return null;
+    if (!this.audioContext) {
+      this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return this.audioContext;
+  }
+
+  tone(frequency, start, duration, type, gain) {
+    const context = this.ensureAudio();
+    if (!context) return;
+
+    const oscillator = context.createOscillator();
+    const volume = context.createGain();
+    oscillator.type = type;
+    oscillator.frequency.setValueAtTime(frequency, start);
+    volume.gain.setValueAtTime(0.0001, start);
+    volume.gain.exponentialRampToValueAtTime(gain, start + 0.01);
+    volume.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+    oscillator.connect(volume).connect(context.destination);
+    oscillator.start(start);
+    oscillator.stop(start + duration + 0.02);
+  }
+
+  playSound(type) {
+    const context = this.ensureAudio();
+    if (!context) return;
+
+    const now = context.currentTime;
+
+    if (type === "move") {
+      this.tone(220, now, 0.055, "triangle", 0.025);
+    }
+
+    if (type === "merge") {
+      this.tone(330, now, 0.08, "sine", 0.04);
+      this.tone(495, now + 0.045, 0.08, "sine", 0.035);
+    }
+
+    if (type === "win") {
+      [392, 523, 659, 784].forEach(function (note, index) {
+        this.tone(note, now + index * 0.08, 0.13, "sine", 0.04);
+      }, this);
+    }
+
+    if (type === "lose") {
+      [220, 165, 123].forEach(function (note, index) {
+        this.tone(note, now + index * 0.09, 0.16, "sawtooth", 0.022);
+      }, this);
+    }
+  }
+
 }
