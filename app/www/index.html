@@ -2,18 +2,14 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>2048</title>
-    <link href="style/main.css" rel="stylesheet" type="text/css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>2048</title>
+  <link href="style/main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <main class="game-container">
     
-    <div class="header">
+    <header class="game-header">
       <div class="logo">2048</div>
       <div class="scores">
         <div class="score-box">
@@ -25,15 +21,15 @@
           <span class="best-value">0</span>
         </div>
       </div>
-    </div>
+    </header>
 
-    <div class="controls">
+    <section class="actions" >
       <p class="desc">将数字合并起来，得到 2048 的方块！</p>
       <div class="buttons">
         <button class="btn btn-new">新的游戏</button>
-        <!-- <button class="btn btn-undo">撤回</button> -->
+        <button class="btn btn-sound">音效开</button>
       </div>
-    </div>
+    </section>
 
     <div class="grid-container">
         <div class="game-over">

@@ -1,5 +1,5 @@
 appname               = gridmerge
-version               = 1.0.0
+version               = 1.0.1
 display_name          = Grid Merge
 desc                  = `<div>基于原版 2048 进行二次开发，在保留经典玩法的基础上，对界面进行了适配优化。<span>
 
@@ -14,4 +14,3 @@ maintainer_url        = https://github.com/gabrielecirulli/2048
 distributor           = ctllo-bit
 desktop_uidir         = ui
 desktop_applaunchname = gridmerge.Application
-
